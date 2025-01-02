@@ -1,0 +1,4 @@
+book store 
+bank 
+cinema db 
+pharmacy
