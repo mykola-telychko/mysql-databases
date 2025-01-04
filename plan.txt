@@ -1,4 +1,32 @@
+https://drawsql.app/teams/no-642/diagrams/bookstore
+
 book store 
+    isbn-code like id for book
+
+--------------------------------
 bank 
-cinema db 
+
+
+
+
+
+--------------------------------
+cinema db
+
+
+
+--------------------------------
 pharmacy
+
+
+AEROPORT — — — start
+    (customs service)
+    Scheduled maintenance (levels-types) .
+    Daily inspection and schedule
+    Validate aircraft depending on the completed work technologies
+AEROPORT — — — end
+
+DETAILS FOR CAR — — start
+
+
+DETAILS FOR CAR — — end

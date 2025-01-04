@@ -1,0 +1,79 @@
+add new entity to diagram
+change issue.txt on README.md
+
+Strengths
+    Separation of Concerns:
+
+    Separate tables for books, authors, genres, and orders make it easier to manage and scale the data.
+    Use of join tables (books_authors, books_genres) allows for many-to-many relationships.
+    Primary and Foreign Keys:
+
+    Primary keys are defined for key tables (authors, books, genres, orders).
+    Foreign keys in join tables enforce relational integrity.
+    Use of Views:
+
+    Views (author, book, book_cat, search) simplify complex queries and provide an abstraction layer for end users.
+    Indexes:
+
+    Indexes on foreign keys (book_id, author_id, genre_id) improve query performance for lookups and joins.
+
+Weaknesses and Areas for Improvement
+
+    Redundancy in Table Definitions:
+
+    Tables author and authors appear redundant. Similarly, book and books overlap significantly in structure and purpose.
+    Recommendation: Retain only authors and books, as they have more detailed definitions.
+    Inconsistent Data Types:
+
+    The float type is used for prices, which may lead to precision issues. Use DECIMAL(10,2) for monetary values.
+    Inconsistent Naming Conventions:
+
+    Table names alternate between singular and plural forms (author vs. authors, book vs. books).
+    Recommendation: Use a consistent naming convention (e.g., plural for tables).
+    Lack of Constraints:
+
+    Some fields (e.g., price, title, description, body) are nullable, which might lead to incomplete data.
+    Recommendation: Add NOT NULL constraints where applicable to enforce data integrity.
+    Absence of Normalization in Orders:
+
+    The orders table includes product_id, but this could benefit from a normalized structure that connects orders to a products table.
+    session_id seems unnecessary; consider a clearer purpose or removal.
+    Inefficient Schema for Genres:
+
+    The genre field in the book view assumes a single genre per book, which contradicts the many-to-many relationship implied by books_genres.
+    Limited User Security:
+
+    The users table does not store passwords securely. Passwords should be hashed (e.g., using bcrypt) before storage.
+    The role field lacks validation or constraints to define permissible roles.
+    Auto-Increment Overlaps:
+
+    Auto-increment values are defined (AUTO_INCREMENT=108), but there's no check for potential overlaps or gaps.
+    Unclear Purpose of search:
+
+    The search table and view seem redundant given the book and author views.
+    Recommendation: Remove search if not adding significant value.
+    Detailed Suggestions
+    Table Mergers and Removal:
+
+    Merge authors and author, books and book. Keep only the more detailed version.
+    Drop unused or redundant tables like book_cat and search.
+    Improve Column Definitions:
+
+    Update price columns to DECIMAL(10,2) for precision.
+    Define stricter constraints (NOT NULL) for critical fields such as title, description, and login.
+    Security Enhancements:
+
+    Hash passwords in the users table.
+    Add an email_verified flag for user verification.
+    Rename Columns and Tables:
+
+    Use consistent naming conventions, such as books_authors instead of book_cat.
+    Optimize Indexing:
+
+    Add indexes for frequently queried columns (e.g., name in authors, title in books).
+    Enhance Foreign Key Constraints:
+
+    Ensure cascade operations align with business logic (e.g., deleting an author doesn't delete their books).
+    Rework Orders Table:
+
+    Normalize the orders table by introducing a products table for item details.
