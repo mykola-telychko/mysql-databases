@@ -77,3 +77,22 @@ Weaknesses and Areas for Improvement
     Rework Orders Table:
 
     Normalize the orders table by introducing a products table for item details.
+
+
+
+INSERT INTO `genres` (`name`) VALUES 
+('Фантастика'),
+('Детектив'),
+('Роман'),
+('Наукова література');
+
+INSERT INTO `books_genres` (`book_id`, `genre_id`) VALUES
+                            (1, 1),  "Фантастика"
+                            (1, 2),  "Детектив"
+                            (2, 3); "Роман"
+
+SELECT b.title, g.name AS genre
+FROM books AS b
+JOIN books_genres AS bg ON b.id = bg.book_id
+JOIN genres AS g ON bg.genre_id = g.id
+WHERE b.id = 1;

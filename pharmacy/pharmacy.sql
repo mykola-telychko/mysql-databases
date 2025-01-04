@@ -1,0 +1,28 @@
+CREATE TABLE `medications`(
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `name` TEXT NOT NULL,
+    `country` TINYTEXT NOT NULL,
+    `colision` BIGINT NOT NULL,
+    `type_1` BIGINT NOT NULL,
+    `type_2` BIGINT NOT NULL
+);
+CREATE TABLE `providers`(
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `name` BIGINT NOT NULL,
+    `phone` BIGINT NOT NULL,
+    `datetime` BIGINT NOT NULL
+);
+CREATE TABLE `manufacturer`(
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `name` BIGINT NOT NULL,
+    `address` BIGINT NOT NULL,
+    `phone` BIGINT NOT NULL
+);
+CREATE TABLE `pharmacies`(
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `name` BIGINT NOT NULL,
+    `address` BIGINT NOT NULL,
+    `phone` BIGINT NOT NULL,
+    `work schedule` BIGINT NOT NULL,
+    `store` BIGINT NOT NULL
+);
