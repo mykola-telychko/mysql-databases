@@ -12,7 +12,6 @@
     email
     account_number (FK до таблиці Accounts)
 
-
 Рахунки
     account_number (PK)
     account_type (депозитний, розрахунковий, кредитний)
@@ -58,7 +57,6 @@
     start_date
     end_date
 
-
 Працівники
     employee_id (PK)
     first_name
@@ -66,18 +64,17 @@
     position
     department
     hire_date
-    Філії
+
+Філії
     branch_id (PK)
     branch_name
     address
     phone_number
 
-
 Відділення
     department_id (PK)
     department_name
     branch_id (FK до таблиці Branches)
-
 
 Продукти
     product_id (PK)
@@ -85,24 +82,22 @@
     product_type (депозит, кредит, картка)
     description
 
-
 Тарифи
     tariff_id (PK)
     product_id (FK до таблиці Products)
     fee
     description
 
-
 Валюти
     currency_id (PK)
     currency_code
     currency_name
-    Користувачі системи
+
+Користувачі системи
     user_id (PK)
     username
     password
     role (адміністратор, касир, менеджер)
-
 
 Журнал операцій
     log_id (PK)
