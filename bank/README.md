@@ -21,7 +21,8 @@
     open_date
     closed_date
     client_id (FK до таблиці Clients)
-    Транзакції
+
+ Транзакції
     transaction_id (PK)
     account_number (FK до таблиці Accounts)
     transaction_type (депозит, зняття, переказ)
