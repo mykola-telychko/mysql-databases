@@ -2,7 +2,7 @@
 
 Проектування бази даних для банку: 15 основних таблиць та їх атрибути
 
-Клієнти
+clients
     client_id (PK)
     first_name
     last_name
@@ -12,7 +12,7 @@
     email
     account_number (FK до таблиці Accounts)
 
-Рахунки
+accounts
     account_number (PK)
     account_type (депозитний, розрахунковий, кредитний)
     balance
@@ -21,7 +21,7 @@
     closed_date
     client_id (FK до таблиці Clients)
 
- Транзакції
+ transactions
     transaction_id (PK)
     account_number (FK до таблиці Accounts)
     transaction_type (депозит, зняття, переказ)
@@ -30,7 +30,7 @@
     description
 
 
-Картки
+cards
     card_number (PK)
     account_number (FK до таблиці Accounts)
     card_type (дебетова, кредитна)
@@ -39,7 +39,7 @@
     status (активна, заблокована)
 
 
-Кредити
+loans_credits
     loan_id (PK)
     account_number (FK до таблиці Accounts)
     loan_amount
@@ -49,7 +49,7 @@
     monthly_payment
 
 
-Депозити
+deposits
     deposit_id (PK)
     account_number (FK до таблиці Accounts)
     deposit_amount
@@ -57,7 +57,7 @@
     start_date
     end_date
 
-Працівники
+employees
     employee_id (PK)
     first_name
     last_name
@@ -65,48 +65,48 @@
     department
     hire_date
 
-Філії
+Філії branches
     branch_id (PK)
     branch_name
     address
     phone_number
 
-Відділення
+departments
     department_id (PK)
     department_name
     branch_id (FK до таблиці Branches)
 
-Продукти
+products
     product_id (PK)
     product_name
     product_type (депозит, кредит, картка)
     description
 
-Тарифи
+tarifs
     tariff_id (PK)
     product_id (FK до таблиці Products)
     fee
     description
 
-Валюти
+currencies
     currency_id (PK)
     currency_code
     currency_name
 
-Користувачі системи
+users - Користувачі системи
     user_id (PK)
     username
     password
     role (адміністратор, касир, менеджер)
 
-Журнал операцій
+log_operation
     log_id (PK)
     user_id (FK до таблиці Users)
     action
     timestamp
 
 
-Контрагенти
+Контрагенти - counterparties
     counterparty_id (PK)
     counterparty_name
     address
