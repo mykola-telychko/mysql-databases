@@ -5,6 +5,12 @@ terminal
 area
 
  - service of planes, service of airport, pilot team (crew, waht tab?)
+AEROPORT — — — start
+    (customs service)
+    Scheduled maintenance (levels-types) .
+    Daily inspection and schedule
+    Validate aircraft depending on the completed work technologies
+AEROPORT — — — end
 
 Система відслідковування багажу, літаків
 

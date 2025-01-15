@@ -6,7 +6,7 @@ CREATE TABLE `medications`(
     `type_1` BIGINT NOT NULL,
     `type_2` BIGINT NOT NULL
 );
-CREATE TABLE `providers`(
+CREATE TABLE `providers-supliers`(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `name` BIGINT NOT NULL,
     `phone` BIGINT NOT NULL,
@@ -25,4 +25,39 @@ CREATE TABLE `pharmacies`(
     `phone` BIGINT NOT NULL,
     `work schedule` BIGINT NOT NULL,
     `store` BIGINT NOT NULL
+);
+CREATE TABLE `Customers`(
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `name` TEXT NOT NULL,
+    `lastname` TEXT NOT NULL,
+    `phone` TEXT NOT NULL,
+    `address` TEXT NOT NULL,
+    `purchase history` TEXT NOT NULL
+);
+CREATE TABLE `orders`(
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `date` BIGINT NOT NULL,
+    `client` BIGINT NOT NULL,
+    `pharmacy` BIGINT NOT NULL,
+    `status` BIGINT NOT NULL
+);
+CREATE TABLE `order_Items`(
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `detail` BIGINT NOT NULL,
+    `name` BIGINT NOT NULL,
+    `qty` BIGINT NOT NULL,
+    `price` BIGINT NOT NULL
+);
+CREATE TABLE `shipments`(
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `date` BIGINT NOT NULL,
+    `suplier` BIGINT NOT NULL,
+    `qty` BIGINT NOT NULL
+);
+CREATE TABLE `Inventory`(
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `name` BIGINT NOT NULL,
+    `qty` BIGINT NOT NULL,
+    `date of receipt` BIGINT NOT NULL,
+    `expiration date` BIGINT NOT NULL
 );
