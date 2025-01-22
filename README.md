@@ -1,5 +1,12 @@
 # mysql-databases
 
+https://drawsql.app/templates/lobsters
+
+https://drawsql.app/templates/airbnb
+
+https://drawsql.app/templates/diaspora
+
+https://drawsql.app/templates/chatwoot
 
 ## Ідеї
 ### Сфери з потенціалом для складних баз даних:
