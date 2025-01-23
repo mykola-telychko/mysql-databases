@@ -35,8 +35,9 @@ research airport network
     Посадка на літак.
 
 Персонал:
-    Співробітники аеропорту: пілоти, бортпровідники, диспетчери, технічний персонал, обслуговуючий персонал.
-    Графіки роботи, кваліфікація, допуски.
+    Співробітники аеропорту: пілоти, бортпровідники, диспетчери,
+     технічний персонал, обслуговуючий персонал.
+    Графіки роботи, (кваліфікація, допуски).
 
 Багаж:
     Реєстрація багажу, сортування, транспортування.
@@ -65,6 +66,7 @@ research airport network
     Управління персоналом: Розклад роботи, облік відпусток, оплата праці.
     Управління інфраструктурою: Моніторинг стану обладнання, планування технічного обслуговування.
 
+--------------------------------
 Аналіз даних: 
     Збір та аналіз даних про пасажиропотік, популярні напрямки, ефективність роботи аеропорту.
     Інтеграція з іншими системами: Зв'язок з системами бронювання авіаквитків, системами управління повітряним рухом та іншими.
@@ -98,3 +100,17 @@ research airport network
 -------------------------------------
 cut into pieces for presentation: 
 https://docs.google.com/spreadsheets/d/1JdHiG87mHUoiBtJDfjpDI8PH2E28Yard6oIiof0Z-ks/edit?gid=0#gid=0
+
+
+https://zephyrnet.com/ru/%D0%B3%D0%B4%D0%B5-%D0%B2%D0%B7%D1%8F%D1%82%D1%8C-%D0%B0%D0%B2%D0%B8%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%83%D1%8E-%D0%B1%D0%B0%D0%B7%D1%83/
+
+https://studbooks.net/2113795/informatika/sozdanie_bazy_dannyh_aeroport_
+
+https://www.youtube.com/watch?v=jqt921HedMY
+
+
+https://ru.bellingcat.com/materialy/2021/06/28/launching-an-open-source-aircraft-database-for-venezuela-ru/
+
+
+диспетчерська служба 
+https://studlearn.com/works/details/dispetcherskaya-sluzhba-aeroporta-javamysql-984
