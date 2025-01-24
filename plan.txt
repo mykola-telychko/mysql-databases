@@ -3,6 +3,9 @@ https://drawsql.app/teams/no-642/diagrams/bookstore
 book store 
     isbn-code like id for book
 
+- describe similar finance department for all projects
+
+
 --------------------------------
 bank 
 
