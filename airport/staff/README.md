@@ -1,5 +1,8 @@
 # STAFF
 
+-- Is it possible to merge some tables (about)? 
+
+
 1. Співробітники (employees)
 Основна інформація про працівників аеропорту.
     employee_id (PK)
