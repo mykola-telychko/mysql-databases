@@ -3,7 +3,7 @@
 https://uk.wikipedia.org/wiki/%D0%90%D0%B5%D1%80%D0%BE%D0%BF%D0%BE%D1%80%D1%82
 
 board
-terminal 
+terminal
 area
 
  - service of planes, service of airport, pilot team (crew, waht tab?)
@@ -62,8 +62,6 @@ Promo Codes Table: To store information about promo codes and discounts.
 Більшість малих та локальних аеропортів є суто внутрішніми. Тобто вони обслуговують рейси 
 всередині однієї країни. Однак, деякі з них можуть мати обмежену кількість міжнародних рейсів, 
 особливо якщо вони розташовані в прикордонних зонах.
-
-
 
 -----------------------------
 Управління та узгодження аеропортів:
