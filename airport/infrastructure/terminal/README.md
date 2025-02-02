@@ -43,8 +43,14 @@
     status 
     (ENUM('Scheduled', 'Delayed', 'Cancelled', 'Departed', 'Arrived'))
      – статус рейсу (for tableau )
-
-    Зв'язки: Один рейс може мати багато квитків (tickets)
+     - Зв'язки: Один рейс може мати багато квитків (tickets)
+Flights (Рейси)
+flight_id (ID рейсу)
+departure_airport (Аеропорт відправлення)
+arrival_airport (Аеропорт прибуття)
+departure_time (Час вильоту)
+arrival_time (Час прибуття)
+airline_id (ID авіакомпанії)
 
 3. tickets (квитки)
     id (PK, INT, AUTO_INCREMENT) – унікальний ідентифікатор квитка

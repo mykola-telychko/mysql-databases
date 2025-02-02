@@ -10,6 +10,7 @@
 
 <!-- presentation  end -->
 
+-- check FLIGHTS in /terminal - README.md
 
 Предметна область та функціонал аеропорту: крім терміналу, фін відділу та табло.
 
