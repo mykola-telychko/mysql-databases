@@ -17,6 +17,11 @@ AEROPORT — — — end
 
 https://github.com/apkuznetsov/database-design-2019
 
+sandboxes:
+https://app.sqldbm.com/MySQL/DatabaseExplorer/New/#
+https://my.vertabelo.com/sign-up
+
+
 https://github.com/poltaratskiy/airport/tree/master/%D0%9F%D1%80%D0%BE%D0%B5%D0%BA%D1%82%20%D0%BA%D0%BB%D0%B8%D0%B5%D0%BD%D1%82%D1%81%D0%BA%D0%BE%D0%B3%D0%BE%20%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F/Airport
 
 5/5

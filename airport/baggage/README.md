@@ -98,13 +98,14 @@
     storage_end	DATETIME	Час завершення зберігання
     storage_location	VARCHAR(255)	Місце зберігання
 
-14. BaggageClaimsLog (Логи претензій щодо багажу)
+14. BaggageClaimsLog (Логи претензій щодо багажу/Заявки про втрачений багаж-LostBaggageClaims)
     
     claim_log_id	INT PRIMARY KEY	Унікальний ідентифікатор логу претензій
     baggage_id	INT	Зовнішній ключ до таблиці Baggage
+    passengere_id
     claim_description	TEXT	Опис претензії
     claim_time	DATETIME	Час подання претензії
-    status	VARCHAR(50)	Стан претензії (наприклад, розглядається, вирішено)
+    status	VARCHAR(50)	Стан претензії (наприклад, розглядається, вирішено,знайдено, не знайдено)
 
 15. BaggageTypes (Типи багажу)
         baggage_type_id (ID типу багажу)
@@ -116,13 +117,6 @@
         baggage_type_id (ID типу багажу)
         weight_limit (Ліміт ваги)
         price (Ціна)
-
-17. LostBaggageClaims (Заявки про втрачений багаж)
-        claim_id (ID заявки)
-        baggage_id (ID багажу)
-        passenger_id (ID пасажира)
-        claim_date (Дата подання заявки)
-        status (Статус заявки: розглядається, знайдено, не знайдено)
 
 18. (SERVICESandSTAFF?) BaggageHandlingEquipment (Обладнання для обробки багажу):
     equipment_id (ID обладнання)
