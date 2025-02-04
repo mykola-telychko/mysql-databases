@@ -49,14 +49,12 @@
         claim_area	VARCHAR(100)	Зона видачі багажу
 
 7. LostBaggage (Втрачений багаж)
-    
     lost_id	INT PRIMARY KEY	Унікальний ідентифікатор втраченого багажу
     baggage_id	INT	Зовнішній ключ до таблиці Baggage
     report_time	DATETIME	Час повідомлення про втрату
     status	VARCHAR(50)	Стан пошуку (наприклад, в пошуку, знайдено)
 
 8. BaggageSearch (Пошук багажу)
-        
         search_id	INT PRIMARY KEY	Унікальний ідентифікатор пошуку
         lost_id	INT	Зовнішній ключ до таблиці LostBaggage
         search_start_time	DATETIME	Час початку пошуку
@@ -64,17 +62,20 @@
         result	VARCHAR(100)	Результат пошуку (наприклад, знайдено, не знайдено)
 
 9. BaggageTypes (Типи багажу)
-        
         type_id	INT PRIMARY KEY	Унікальний ідентифікатор типу багажу
         type_name	VARCHAR(100)	Назва типу (наприклад, ручна поклажа, валіза, спортивне обладнання)
+        max_dimensions
         max_weight	DECIMAL(5,2)	Максимальна вага (кг)
+        baggage_type_id (ID типу багажу)        
 
-10. BaggageFees (Тарифи за багаж)
-        
+10. BaggageFees (Тарифи за багаж)(FINANCE department?) 
         fee_id	INT PRIMARY KEY	Унікальний ідентифікатор тарифу
-        type_id	INT	Зовнішній ключ до таблиці BaggageTypes
+        baggage_type_id (ID типу багажу, Зовнішній ключ до таблиці BaggageTypes)
+        weight_limit (Ліміт ваги)
+        price (Ціна)
         fee_amount	DECIMAL(10,2)	Сума тарифу
         effective_date	DATE	Дата набуття чинності
+
 
 11. BaggageHandlingEvents (Події з багажем)
         event_id (ID події)
@@ -84,14 +85,12 @@
         location (Місце, де відбулася подія)
 
 12. BaggageInspection (Інспекція багажу)
-        
         inspection_id	INT PRIMARY KEY	Унікальний ідентифікатор інспекції
         baggage_id	INT	Зовнішній ключ до таблиці Baggage
         inspection_time	DATETIME	Час інспекції
         result	VARCHAR(100)	Результат інспекції (наприклад, дозволено, заборонено)
 
 13. BaggageStorage (Зберігання багажу)
-    
     storage_id	INT PRIMARY KEY	Унікальний ідентифікатор зберігання
     baggage_id	INT	Зовнішній ключ до таблиці Baggage
     storage_start	DATETIME	Час початку зберігання
@@ -99,7 +98,6 @@
     storage_location	VARCHAR(255)	Місце зберігання
 
 14. BaggageClaimsLog (Логи претензій щодо багажу/Заявки про втрачений багаж-LostBaggageClaims)
-    
     claim_log_id	INT PRIMARY KEY	Унікальний ідентифікатор логу претензій
     baggage_id	INT	Зовнішній ключ до таблиці Baggage
     passengere_id
@@ -107,18 +105,7 @@
     claim_time	DATETIME	Час подання претензії
     status	VARCHAR(50)	Стан претензії (наприклад, розглядається, вирішено,знайдено, не знайдено)
 
-15. BaggageTypes (Типи багажу)
-        baggage_type_id (ID типу багажу)
-        type_name (Назва типу багажу, наприклад, валіза, сумка, спортивний інвентар)
-
-(FINANCE department?) 
-16. BaggageFees (Тарифи за багаж)
-        fee_id (ID тарифу)
-        baggage_type_id (ID типу багажу)
-        weight_limit (Ліміт ваги)
-        price (Ціна)
-
-18. (SERVICESandSTAFF?) BaggageHandlingEquipment (Обладнання для обробки багажу):
+15. (SERVICESandSTAFF?) BaggageHandlingEquipment (Обладнання для обробки багажу):
     equipment_id (ID обладнання)
     equipment_type (Тип обладнання: конвеєр, сканер тощо)
     location (Місцезнаходження обладнання)
@@ -138,3 +125,118 @@
  BaggageStorage (Зберігання багажу)
  BaggageClaimsLog 
  ----------------
+
+Baggage
+BaggageCheckIn
+BaggageTags
+BaggageTransport
+BaggageClaim
+LostBaggage
+BaggageSearch
+BaggageFees
+BaggageHandlingEvents
+BaggageInspection
+BaggageStorage
+BaggageClaimsLog
+BaggageTypes
+BaggageHandlingEquipment
+
+-------
+
+Основні процеси:
+Реєстрація багажу:
+
+Пасажир реєструє багаж під час check-in.
+Багажу присвоюється унікальний ідентифікатор.
+
+Сортування та транспортування:
+        Багаж сортується за рейсами та транспортується до відповідного літака.
+
+Видача багажу:
+        Багаж видається пасажиру після прибуття рейсу.
+
+Пошук втраченого багажу:
+        Якщо багаж втрачено, ініціюється процес пошуку.
+
+Інспекція та зберігання:
+        Багаж може проходити інспекцію або тимчасово зберігатися.
+
+Обробка претензій:
+        Пасажир може подати претензію щодо багажу.
+
+Зв'язки між таблицями:
+1. Baggage (Багаж)
+Зв'язок один до одного:
+
+З BaggageCheckIn: Кожен багаж реєструється один раз.
+З BaggageTags: Кожен багаж має одну бірку.
+З BaggageTypes: Кожен багаж належить до одного типу.
+
+Зв'язок один до багатьох:
+        З BaggageTransport: Багаж може транспортуватися кілька разів.
+        З BaggageHandlingEvents: Багаж може мати кілька подій обробки.
+        З BaggageInspection: Багаж може проходити інспекцію кілька разів.
+        З BaggageStorage: Багаж може зберігатися кілька разів.
+        З BaggageClaimsLog: Багаж може мати кілька претензій.
+
+2. BaggageCheckIn (Реєстрація багажу)
+Зв'язок багато до одного:
+        З Baggage: Кожна реєстрація пов'язана з одним багажем.
+
+3. BaggageTags (Бірки багажу)
+Зв'язок багато до одного:
+        З Baggage: Кожна бірка пов'язана з одним багажем.
+
+4. BaggageTransport (Транспортування багажу)
+Зв'язок багато до одного:
+        З Baggage: Кожне транспортування пов'язане з одним багажем.
+        З BaggageHandlingEquipment: Кожне транспортування може використовувати одне обладнання.
+
+5. BaggageClaim (Видача багажу)
+Зв'язок багато до одного:
+        З Baggage: Кожна видача пов'язана з одним багажем.
+
+6. LostBaggage (Втрачений багаж)
+Зв'язок багато до одного:
+        З Baggage: Кожен втрачений багаж пов'язаний з одним багажем.
+
+7. BaggageSearch (Пошук багажу)
+Зв'язок багато до одного:
+        З LostBaggage: Кожен пошук пов'язаний з одним втраченим багажем.
+
+8. BaggageFees (Тарифи за багаж)
+Зв'язок багато до одного:
+        З BaggageTypes: Кожен тариф пов'язаний з одним типом багажу.
+
+9. BaggageHandlingEvents (Події обробки багажу)
+Зв'язок багато до одного:
+        З Baggage: Кожна подія пов'язана з одним багажем.
+        З BaggageHandlingEquipment: Кожна подія може використовувати одне обладнання.
+
+10. BaggageInspection (Інспекція багажу)
+        Зв'язок багато до одного:
+        З Baggage: Кожна інспекція пов'язана з одним багажем.
+
+11. BaggageStorage (Зберігання багажу)
+        Зв'язок багато до одного:
+        З Baggage: Кожне зберігання пов'язане з одним багажем.
+
+12. BaggageClaimsLog (Логи претензій щодо багажу)
+        Зв'язок багато до одного:
+        З Baggage: Кожна претензія пов'язана з одним багажем.
+
+13. BaggageTypes (Типи багажу)
+
+Зв'язок один до багатьох:
+        З Baggage: Кожен тип багажу може бути пов'язаний з багатьма багажами.
+        З BaggageFees: Кожен тип багажу може мати кілька тарифів.
+        14. BaggageHandlingEquipment (Обладнання для обробки багажу)
+Зв'язок один до багатьох:
+        З BaggageTransport: Одне обладнання може використовуватися для багатьох транспортувань.
+        З BaggageHandlingEvents: Одне обладнання може використовуватися для багатьох подій обробки.
+
+Візуалізація зв'язків:
+        Baggage є центральною таблицею, яка пов'язана з більшістю інших таблиць.
+
+        BaggageTypes та BaggageHandlingEquipment є довідковими таблицями, які використовуються для класифікації багажу та обробки.
+        LostBaggage та BaggageSearch пов'язані між собою для обробки втраченого багажу.

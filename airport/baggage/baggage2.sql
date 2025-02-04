@@ -54,13 +54,17 @@ CREATE TABLE `BaggageSearch`(
     `result` VARCHAR(255) NOT NULL
 );
 CREATE TABLE `BaggageTypes`(
-    `baggage_type_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `type_name` VARCHAR(255) NOT NULL,
-    `details` TEXT NOT NULL
+    `type_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `type_name` VARCHAR(255) NOT NULL COMMENT 'Назва типу (наприклад, ручна поклажа, валіза, спортивне обладнання)',
+    `max_weight` DECIMAL(8, 2) NOT NULL,
+    `max_dimensions` VARCHAR(255) NOT NULL,
+    `baggage_type_id` INT NOT NULL
 );
 CREATE TABLE `BaggageFees`(
     `fee_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `type_id` INT NOT NULL,
+    `baggage_type_id` INT NOT NULL,
+    `weight_limit` BIGINT NOT NULL,
+    `price` BIGINT NOT NULL,
     `fee_amount` DECIMAL(8, 2) NOT NULL,
     `effective_date` DATE NOT NULL
 );
@@ -89,5 +93,6 @@ CREATE TABLE `BaggageClaimsLog`(
     `baggage_id` INT NOT NULL,
     `claim_description` TEXT NOT NULL,
     `claim_time` DATETIME NOT NULL,
-    `status` VARCHAR(255) NOT NULL
+    `status` VARCHAR(255) NOT NULL,
+    `passenger_id` INT NOT NULL
 );

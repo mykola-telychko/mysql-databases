@@ -63,6 +63,14 @@ prices_policy: про цінову політику (базові тарифи, 
     passengers:
         Інформація про пасажирів (персональні дані, номер бронювання).
 
+10. BaggageFees (Тарифи за багаж)(FINANCE department and baggage) 
+        fee_id	INT PRIMARY KEY	Унікальний ідентифікатор тарифу
+        baggage_type_id (ID типу багажу, Зовнішній ключ до таблиці BaggageTypes)
+        weight_limit (Ліміт ваги)
+        price (Ціна)
+        fee_amount	DECIMAL(10,2)	Сума тарифу
+        effective_date	DATE	Дата набуття чинності
+
 Взаємозв'язки між таблицями:
 payments пов'язана з bookings, invoices та currencies.
 expenses пов'язана з expenses_categories та contracts.
