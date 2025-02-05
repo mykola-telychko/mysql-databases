@@ -44,7 +44,6 @@
     Митний контроль.
     Очікування рейсу.
     Посадка на літак.
-
     Registration: passenger data, baggage, tickets.
     Passing passport control.
     Customs control.
