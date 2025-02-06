@@ -26,7 +26,7 @@ CREATE TABLE `pharmacies`(
     `work schedule` BIGINT NOT NULL,
     `store` BIGINT NOT NULL
 );
-CREATE TABLE `Customers`(
+CREATE TABLE `сustomers`(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `name` TEXT NOT NULL,
     `lastname` TEXT NOT NULL,
@@ -60,4 +60,40 @@ CREATE TABLE `Inventory`(
     `qty` BIGINT NOT NULL,
     `date of receipt` BIGINT NOT NULL,
     `expiration date` BIGINT NOT NULL
+);
+CREATE TABLE `employees`(
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `name` BIGINT NOT NULL,
+    `lastname` BIGINT NOT NULL,
+    `position` BIGINT NOT NULL,
+    `department` BIGINT NOT NULL
+);
+CREATE TABLE `sales`(
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `date` BIGINT NOT NULL,
+    `client` BIGINT NOT NULL,
+    `product` BIGINT NOT NULL,
+    `qty` BIGINT NOT NULL,
+    `amount` BIGINT NOT NULL
+);
+CREATE TABLE `returns`(
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `num_return` BIGINT NOT NULL,
+    `date` BIGINT NOT NULL,
+    `client` BIGINT NOT NULL,
+    `product` BIGINT NOT NULL,
+    `qty` BIGINT NOT NULL,
+    `reason` BIGINT NOT NULL
+);
+CREATE TABLE `discounts`(
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `type_discount` BIGINT NOT NULL,
+    `percent_size` BIGINT NOT NULL,
+    `period` BIGINT NOT NULL
+);
+CREATE TABLE `prescriptions`(
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `doctor` BIGINT NOT NULL,
+    `patient` BIGINT NOT NULL,
+    `medicine` BIGINT NOT NULL
 );

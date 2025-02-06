@@ -1,0 +1,173 @@
+- upgrate and update main-table 
+
+Аналіз таблиць та пропозиції щодо покращення
+1. Таблиця medications (Ліки)
+CREATE TABLE `medications` (
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR(255) NOT NULL,          -- Назва ліків
+    `country` VARCHAR(100) NOT NULL,       -- Країна виробництва
+    `colision` TEXT,                       -- Опис колізій
+    `type_1` VARCHAR(100),                 -- Тип ліків (наприклад, антибіотики)
+    `type_2` VARCHAR(100),                 -- Підтип ліків (наприклад, таблетки)
+    `price` DECIMAL(10, 2) NOT NULL,       -- Ціна
+    `expiration_date` DATE NOT NULL,       -- Термін придатності
+    `manufacturer_id` BIGINT UNSIGNED,     -- Зовнішній ключ до виробника
+    FOREIGN KEY (`manufacturer_id`) REFERENCES `manufacturer`(`id`)
+);
+
+2. Таблиця providers-supliers (Постачальники)
+CREATE TABLE `providers_suppliers` (
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR(255) NOT NULL,          -- Назва постачальника
+    `phone` VARCHAR(20) NOT NULL,          -- Телефон
+    `email` VARCHAR(255),                  -- Електронна пошта
+    `contact_person` VARCHAR(255),         -- Контактна особа
+    `registration_date` DATETIME NOT NULL  -- Дата реєстрації
+);
+
+3. Таблиця manufacturer (Виробники)
+CREATE TABLE `manufacturer` (
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR(255) NOT NULL,          -- Назва виробника
+    `address` VARCHAR(255) NOT NULL,       -- Адреса
+    `phone` VARCHAR(20) NOT NULL,          -- Телефон
+    `email` VARCHAR(255),                  -- Електронна пошта
+    `country` VARCHAR(100) NOT NULL        -- Країна
+);
+
+4. Таблиця pharmacies (Аптеки)
+CREATE TABLE `pharmacies` (
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR(255) NOT NULL,          -- Назва аптеки
+    `address` VARCHAR(255) NOT NULL,       -- Адреса
+    `phone` VARCHAR(20) NOT NULL,          -- Телефон
+    `work_schedule` VARCHAR(100) NOT NULL, -- Графік роботи
+    `manager_id` BIGINT UNSIGNED,          -- Зовнішній ключ до менеджера
+    `type` VARCHAR(100) NOT NULL,          -- Тип аптеки (наприклад, маленька, середня, велика)
+    FOREIGN KEY (`manager_id`) REFERENCES `employees`(`id`)
+);
+
+5. Таблиця сustomers (Клієнти)
+CREATE TABLE `customers` (
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR(255) NOT NULL,          -- Ім'я
+    `lastname` VARCHAR(255) NOT NULL,      -- Прізвище
+    `phone` VARCHAR(20) NOT NULL,          -- Телефон
+    `address` VARCHAR(255) NOT NULL,       -- Адреса
+    `email` VARCHAR(255),                  -- Електронна пошта
+    `registration_date` DATETIME NOT NULL  -- Дата реєстрації
+);
+
+6. Таблиця orders (Замовлення)
+CREATE TABLE `orders` (
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `date` DATETIME NOT NULL,              -- Дата замовлення
+    `client_id` BIGINT UNSIGNED NOT NULL,  -- Зовнішній ключ до клієнта
+    `pharmacy_id` BIGINT UNSIGNED NOT NULL, -- Зовнішній ключ до аптеки
+    `status` VARCHAR(50) NOT NULL,         -- Статус замовлення
+    `total_amount` DECIMAL(10, 2) NOT NULL, -- Загальна сума
+    `payment_type` VARCHAR(50) NOT NULL,   -- Тип оплати
+    FOREIGN KEY (`client_id`) REFERENCES `customers`(`id`),
+    FOREIGN KEY (`pharmacy_id`) REFERENCES `pharmacies`(`id`)
+);
+
+7. Таблиця order_Items (Елементи замовлення)
+CREATE TABLE `order_items` (
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `order_id` BIGINT UNSIGNED NOT NULL,   -- Зовнішній ключ до замовлення
+    `medication_id` BIGINT UNSIGNED NOT NULL, -- Зовнішній ключ до ліків
+    `quantity` INT NOT NULL,               -- Кількість
+    `price` DECIMAL(10, 2) NOT NULL,       -- Ціна за одиницю
+    FOREIGN KEY (`order_id`) REFERENCES `orders`(`id`),
+    FOREIGN KEY (`medication_id`) REFERENCES `medications`(`id`)
+);
+
+8. Таблиця shipments (Поставки)
+CREATE TABLE `shipments` (
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `date` DATETIME NOT NULL,              -- Дата поставки
+    `supplier_id` BIGINT UNSIGNED NOT NULL, -- Зовнішній ключ до постачальника
+    `quantity` INT NOT NULL,               -- Кількість
+    `total_cost` DECIMAL(10, 2) NOT NULL,  -- Загальна вартість
+    `status` VARCHAR(50) NOT NULL,         -- Статус поставки
+    FOREIGN KEY (`supplier_id`) REFERENCES `providers_suppliers`(`id`)
+);
+
+9. Таблиця Inventory (Інвентаризація)
+CREATE TABLE `inventory` (
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `medication_id` BIGINT UNSIGNED NOT NULL, -- Зовнішній ключ до ліків
+    `quantity` INT NOT NULL,               -- Кількість
+    `date_of_receipt` DATE NOT NULL,       -- Дата надходження
+    `expiration_date` DATE NOT NULL,       -- Термін придатності
+    FOREIGN KEY (`medication_id`) REFERENCES `medications`(`id`)
+);
+
+10. Таблиця employees (Працівники)
+CREATE TABLE `employees` (
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR(255) NOT NULL,          -- Ім'я
+    `lastname` VARCHAR(255) NOT NULL,      -- Прізвище
+    `position` VARCHAR(100) NOT NULL,      -- Посада
+    `department` VARCHAR(100) NOT NULL,    -- Відділ
+    `salary` DECIMAL(10, 2) NOT NULL,      -- Зарплата
+    `hire_date` DATE NOT NULL              -- Дата прийому на роботу
+);
+
+11. Таблиця sales (Продажі)
+CREATE TABLE `sales` (
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `date` DATETIME NOT NULL,              -- Дата продажу
+    `client_id` BIGINT UNSIGNED NOT NULL,  -- Зовнішній ключ до клієнта
+    `medication_id` BIGINT UNSIGNED NOT NULL, -- Зовнішній ключ до ліків
+    `quantity` INT NOT NULL,               -- Кількість
+    `amount` DECIMAL(10, 2) NOT NULL,      -- Загальна сума
+    `pharmacy_id` BIGINT UNSIGNED NOT NULL, -- Зовнішній ключ до аптеки
+    FOREIGN KEY (`client_id`) REFERENCES `customers`(`id`),
+    FOREIGN KEY (`medication_id`) REFERENCES `medications`(`id`),
+    FOREIGN KEY (`pharmacy_id`) REFERENCES `pharmacies`(`id`)
+);
+
+12. Таблиця returns (Повернення)
+CREATE TABLE `returns` (
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `return_number` VARCHAR(50) NOT NULL,  -- Номер повернення
+    `date` DATETIME NOT NULL,              -- Дата повернення
+    `client_id` BIGINT UNSIGNED NOT NULL,  -- Зовнішній ключ до клієнта
+    `medication_id` BIGINT UNSIGNED NOT NULL, -- Зовнішній ключ до ліків
+    `quantity` INT NOT NULL,               -- Кількість
+    `reason` TEXT NOT NULL,                -- Причина повернення
+    `sale_id` BIGINT UNSIGNED NOT NULL,    -- Зовнішній ключ до продажу
+    FOREIGN KEY (`client_id`) REFERENCES `customers`(`id`),
+    FOREIGN KEY (`medication_id`) REFERENCES `medications`(`id`),
+    FOREIGN KEY (`sale_id`) REFERENCES `sales`(`id`)
+);
+
+13. Таблиця discounts (Знижки)
+CREATE TABLE `discounts` (
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `type_discount` VARCHAR(100) NOT NULL, -- Тип знижки
+    `percent_size` DECIMAL(5, 2) NOT NULL, -- Розмір знижки у відсотках
+    `period` VARCHAR(100) NOT NULL,        -- Період дії знижки
+    `medication_id` BIGINT UNSIGNED,       -- Зовнішній ключ до ліків (якщо знижка на конкретний продукт)
+    `client_id` BIGINT UNSIGNED,           -- Зовнішній ключ до клієнта (якщо знижка для конкретного клієнта)
+    FOREIGN KEY (`medication_id`) REFERENCES `medications`(`id`),
+    FOREIGN KEY (`client_id`) REFERENCES `customers`(`id`)
+);
+
+14. Таблиця prescriptions (Рецепти)
+CREATE TABLE `prescriptions` (
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `doctor_id` BIGINT UNSIGNED NOT NULL,  -- Зовнішній ключ до лікаря
+    `patient_id` BIGINT UNSIGNED NOT NULL, -- Зовнішній ключ до пацієнта
+    `medication_id` BIGINT UNSIGNED NOT NULL, -- Зовнішній ключ до ліків
+    `issue_date` DATE NOT NULL,            -- Дата виписки
+    `status` VARCHAR(50) NOT NULL,         -- Статус рецепту (наприклад, активний, виконаний)
+    FOREIGN KEY (`doctor_id`) REFERENCES `employees`(`id`),
+    FOREIGN KEY (`patient_id`) REFERENCES `customers`(`id`),
+    FOREIGN KEY (`medication_id`) REFERENCES `medications`(`id`)
+);
+
+Зв'язки між таблицями medications: Зв'язана з manufacturer через manufacturer_id.
+Зв'язана з order_items, inventory, sales, returns, prescriptions, discounts.
+providers_suppliers: Зв'язана з shipments.
