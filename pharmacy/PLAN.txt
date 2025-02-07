@@ -1,4 +1,8 @@
+
 - upgrate and update main-table 
+
+- employees - check and compare
+
 
 Аналіз таблиць та пропозиції щодо покращення
 1. Таблиця medications (Ліки)
@@ -103,6 +107,7 @@ CREATE TABLE `inventory` (
     FOREIGN KEY (`medication_id`) REFERENCES `medications`(`id`)
 );
 
+--------------- 
 10. Таблиця employees (Працівники)
 CREATE TABLE `employees` (
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
