@@ -1,7 +1,7 @@
 
 - upgrate and update main-table 
 
-- employees - check and compare
+-  add 15 last table for scheme
 
 
 Аналіз таблиць та пропозиції щодо покращення
@@ -107,7 +107,6 @@ CREATE TABLE `inventory` (
     FOREIGN KEY (`medication_id`) REFERENCES `medications`(`id`)
 );
 
---------------- 
 10. Таблиця employees (Працівники)
 CREATE TABLE `employees` (
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -132,7 +131,7 @@ CREATE TABLE `sales` (
     FOREIGN KEY (`medication_id`) REFERENCES `medications`(`id`),
     FOREIGN KEY (`pharmacy_id`) REFERENCES `pharmacies`(`id`)
 );
-
+ 
 12. Таблиця returns (Повернення)
 CREATE TABLE `returns` (
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -160,6 +159,7 @@ CREATE TABLE `discounts` (
     FOREIGN KEY (`client_id`) REFERENCES `customers`(`id`)
 );
 
+---------------
 14. Таблиця prescriptions (Рецепти)
 CREATE TABLE `prescriptions` (
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
