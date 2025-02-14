@@ -20,9 +20,7 @@
 
 1. Таблиця employees
 Недоліки:
-Поле position має тип BIGINT, але воно має бути текстовим або посилатися на таблицю з посадами.
 Поле status має тип BIGINT, але воно має бути текстовим або використовувати ENUM.
-Відсутність контактної інформації (наприклад, email, телефон).
 CREATE TABLE `employees` (
     `employee_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `first_name` VARCHAR(100) NOT NULL,
@@ -38,8 +36,6 @@ CREATE TABLE `employees` (
 );
 
 2. Таблиця departments
-Недоліки:
-Поле head_employee_id має тип TEXT, але воно має бути BIGINT і посилатися на таблицю employees.
 CREATE TABLE `departments` (
     `department_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `name` VARCHAR(255) NOT NULL,
@@ -60,8 +56,6 @@ CREATE TABLE `work_schedules` (
 );
 
 4. Таблиця qualifications_training
-Недоліки:
-Поля issued_by, valid_until, date_completed мають тип DATETIME, але вони мають бути DATE.
 CREATE TABLE `qualifications_training` (
     `record_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `employee_id` BIGINT UNSIGNED NOT NULL,
@@ -121,8 +115,6 @@ CREATE TABLE `service_staff` (
 );
 
 9. Таблиця attendance_log
-Недоліки:
-Поле event має тип TEXT, але воно має бути ENUM.
 CREATE TABLE `attendance_log` (
     `log_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `employee_id` BIGINT UNSIGNED NOT NULL,
@@ -132,8 +124,6 @@ CREATE TABLE `attendance_log` (
 );
 
 10. Таблиця incidents
-Недоліки:
-Поле description має тип DATETIME, але воно має бути TEXT.
 CREATE TABLE `incidents` (
     `incident_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `employee_id` BIGINT UNSIGNED NOT NULL,
@@ -171,8 +161,6 @@ CREATE TABLE `maintenance_requests` (
 );
 
 13. Таблиця communication_logs
-Недоліки:
-Відсутність зв'язку з таблицею departments для логування повідомлень між відділами.
 CREATE TABLE `communication_logs` (
     `comm_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `employee_id` BIGINT UNSIGNED NOT NULL,
@@ -184,8 +172,6 @@ CREATE TABLE `communication_logs` (
 );
 
 14. Таблиця work_reports
-Недоліки:
-Відсутність поля для типу звіту (наприклад, щоденний, тижневий).
 CREATE TABLE `work_reports` (
     `report_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `employee_id` BIGINT UNSIGNED NOT NULL,
@@ -196,8 +182,6 @@ CREATE TABLE `work_reports` (
 );
 
 15. Таблиця administration
-Недоліки:
-Відсутність зв'язку з таблицею departments.
 CREATE TABLE `administration` (
     `admin_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `employee_id` BIGINT UNSIGNED NOT NULL,
