@@ -1,3 +1,6 @@
+- choose first department for fill
+
+- airlines upgrade / baggage 
 
 - пройтися по всім піддиректоріям і перевірити якість і обєм таблиць
 
