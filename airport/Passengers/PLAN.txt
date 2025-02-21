@@ -1,1 +1,3 @@
 - Пасажири: (15 вже є . ще 15 дослідити)
+
+- passanger-metrics - new 15 tabs - pa15second.txt
