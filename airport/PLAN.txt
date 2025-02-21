@@ -1,9 +1,9 @@
-- choose first department for fill
 
-- airlines upgrade / baggage 
+- airlines upgrade / baggage - create a new schema from a description
 
 - пройтися по всім піддиректоріям і перевірити якість і обєм таблиць
 
+- choose first department for fill
 - first try to union all tabs and check scheme . create collage from every screen (from subDirs)
 
 - окрема презентація для локальних аеропортів 8-10 фото. 
