@@ -1,4 +1,6 @@
 
+- Services aircraft - upgrade: create a new schema from a description
+
 - baggage/airlines/finance - upgrade: create a new schema from a description
 
 - пройтися по всім піддиректоріям і перевірити якість і обєм таблиць
