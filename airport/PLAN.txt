@@ -1,5 +1,7 @@
 
-- Services aircraft - upgrade: create a new schema from a description
+- Services aircraft - last check & upgrade (why separate FuelTypes)
+- translate clasification methods for presentation
+- update common draw.io scheme
 
 - baggage/airlines/finance - upgrade: create a new schema from a description
 
@@ -19,7 +21,7 @@
     головні світові та локальні внутрішні аеропорти. 
     research airport network
     classification/index.html - create 2 slides (types, types-title - move to vertical pos)
-
+    - transform to site and deploy github pages
 <!-- presentation  end -->
 
 -- check FLIGHTS in /terminal - README.md
