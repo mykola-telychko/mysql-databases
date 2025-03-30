@@ -1,4 +1,6 @@
 
+- Security check readme.md and build ralations
+
 - Services aircraft - last check & upgrade (why separate FuelTypes)
 - translate clasification methods for presentation
 - update common draw.io scheme

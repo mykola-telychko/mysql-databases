@@ -1,107 +1,140 @@
 # Security
 
-
 -------------------------
+Основні таблиці:
+Cameras - камери спостереження
 
-1. Cameras (Камери відеоспостереження)
-    camera_id	INT PRIMARY KEY	Унікальний ідентифікатор камери
-    location	VARCHAR(255)	Розташування камери
-    type	VARCHAR(100)	Тип камери (наприклад, купольна, поворотна)
-    status	VARCHAR(50)	Стан камери (активна, неактивна, на ремонті)
-    last_maintenance	DATE	Дата останнього технічного обслуговування
+SurveillanceLogs - логи з камер
+AccessPoints - контрольні точки доступу
+AccessLogs - логи доступу
+Alarms - системи тривоги
+Persons - особи (персонал, пасажири)
+AlarmLogs - логи тривог
+SecurityZones - зони безпеки
+ZoneAccess - доступ до зон
+Incidents - інциденти
+IncidentResponses - реагування на інциденти
+SecurityStaff - охоронний персонал
+SecurityShifts - зміни охорони
+EmergencyExits - аварійні виходи
+SecurityPolicies - політики безпеки
 
-2. SurveillanceLogs (Логи відеоспостереження)
-    log_id	INT PRIMARY KEY	Унікальний ідентифікатор логу
-    camera_id	INT	Зовнішній ключ до таблиці Cameras
-    timestamp	DATETIME	Час запису
-    event_description	TEXT	Опис події (наприклад, підозріла активність)
+Пропоновані зв'язки між таблицями: 
+SurveillanceLogs.camera_id → Cameras.camera_id (зовнішній ключ)
+AccessLogs.access_point_id → AccessPoints.access_point_id
+AccessLogs.person_id → Persons.person_id
 
-3. AccessPoints (Точки контролю доступу)
-    access_point_id	INT PRIMARY KEY	Унікальний ідентифікатор точки доступу
-    location	VARCHAR(255)	Розташування точки доступу
-    type	VARCHAR(100)	Тип точки доступу (наприклад, турнікет, двері)
-    status	VARCHAR(50)	Стан точки доступу (активна, неактивна)
+AlarmLogs.alarm_id → Alarms.alarm_id
+ZoneAccess.zone_id → SecurityZones.zone_id
+ZoneAccess.person_id → Persons.person_id
 
-4. AccessLogs (Логи контролю доступу)
-    log_id	INT PRIMARY KEY	Унікальний ідентифікатор логу
-    access_point_id	INT	Зовнішній ключ до таблиці AccessPoints
-    person_id	INT	Зовнішній ключ до таблиці Persons
-    timestamp	DATETIME	Час доступу
-    access_type	VARCHAR(50)	Тип доступу (вхід, вихід)
+IncidentResponses.incident_id → Incidents.incident_id
+IncidentResponses.person_id → Persons.person_id
+SecurityShifts.staff_id → SecurityStaff.staff_id
+SecurityShifts.zone_id → SecurityZones.zone_id
 
-5. Persons (Особи)
-    person_id	INT PRIMARY KEY	Унікальний ідентифікатор особи
-    name	VARCHAR(255)	Ім'я особи
-    role	VARCHAR(100)	Роль (наприклад, працівник, пасажир)
-    access_level	VARCHAR(50)	Рівень доступу (наприклад, адміністратор, звичайний)
+Пропоновані додаткові таблиці:
+1. Equipment (Обладнання)
 
-6. Alarms (Системи оповіщення)
-    alarm_id	INT PRIMARY KEY	Унікальний ідентифікатор сигналізації
-    location	VARCHAR(255)	Розташування сигналізації
-    type	VARCHAR(100)	Тип сигналізації (наприклад, пожежна, тривожна)
-    status	VARCHAR(50)	Стан сигналізації (активна, неактивна)
+CREATE TABLE `Equipment` (
+    `equipment_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR(255) NOT NULL,
+    `type` VARCHAR(255) NOT NULL,
+    `location` VARCHAR(255) NOT NULL,
+    `status` VARCHAR(255) NOT NULL,
+    `last_inspection` DATE NOT NULL,
+    `responsible_person_id` INT NOT NULL,
+    FOREIGN KEY (`responsible_person_id`) REFERENCES `Persons`(`person_id`)
+);
+2. VisitorRecords (Реєстрація відвідувачів)
 
-7. AlarmLogs (Логи оповіщень)
-    log_id	INT PRIMARY KEY	Унікальний ідентифікатор логу
-    alarm_id	INT	Зовнішній ключ до таблиці Alarms
-    timestamp	DATETIME	Час активації сигналізації
-    event_description	TEXT	Опис події (наприклад, пожежа, порушення доступу)
+CREATE TABLE `VisitorRecords` (
+    `record_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `visitor_id` INT NOT NULL,
+    `purpose` TEXT NOT NULL,
+    `entry_time` DATETIME NOT NULL,
+    `exit_time` DATETIME,
+    `escort_person_id` INT,
+    `access_level` VARCHAR(255) NOT NULL,
+    FOREIGN KEY (`visitor_id`) REFERENCES `Persons`(`person_id`),
+    FOREIGN KEY (`escort_person_id`) REFERENCES `Persons`(`person_id`)
+);
+3. BaggageChecks (Перевірка багажу)
 
-8. SecurityZones (Зони безпеки)
-    
-    zone_id	INT PRIMARY KEY	Унікальний ідентифікатор зони
-    name	VARCHAR(255)	Назва зони (наприклад, зона VIP, зона контролю)
-    description	TEXT	Опис зони
+CREATE TABLE `BaggageChecks` (
+    `check_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `person_id` INT NOT NULL,
+    `check_time` DATETIME NOT NULL,
+    `check_type` VARCHAR(255) NOT NULL,
+    `result` VARCHAR(255) NOT NULL,
+    `staff_id` INT NOT NULL,
+    `equipment_id` INT,
+    `notes` TEXT,
+    FOREIGN KEY (`person_id`) REFERENCES `Persons`(`person_id`),
+    FOREIGN KEY (`staff_id`) REFERENCES `SecurityStaff`(`staff_id`),
+    FOREIGN KEY (`equipment_id`) REFERENCES `Equipment`(`equipment_id`)
+);
+4. SecurityTrainings (Тренування персоналу)
 
-9. ZoneAccess (Доступ до зон)
-    
-    zone_access_id	INT PRIMARY KEY	Унікальний ідентифікатор доступу
-    zone_id	INT	Зовнішній ключ до таблиці SecurityZones
-    person_id	INT	Зовнішній ключ до таблиці Persons
-    access_type	VARCHAR(50)	Тип доступу (дозволений, заборонений)
+CREATE TABLE `SecurityTrainings` (
+    `training_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR(255) NOT NULL,
+    `description` TEXT NOT NULL,
+    `trainer_id` INT NOT NULL,
+    `date` DATE NOT NULL,
+    `duration` INT NOT NULL COMMENT 'Тривалість у хвилинах',
+    FOREIGN KEY (`trainer_id`) REFERENCES `SecurityStaff`(`staff_id`)
+);
+5. StaffTrainingRecords (Реєстрація тренувань персоналу)
 
-10. Incidents (Інциденти)
-        
-        incident_id	INT PRIMARY KEY	Унікальний ідентифікатор інциденту
-        description	TEXT	Опис інциденту
-        timestamp	DATETIME	Час інциденту
-        location	VARCHAR(255)	Місце інциденту
-        status	VARCHAR(50)	Стан інциденту (наприклад, вирішено, в процесі)
+CREATE TABLE `StaffTrainingRecords` (
+    `record_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `staff_id` INT NOT NULL,
+    `training_id` INT NOT NULL,
+    `completion_status` VARCHAR(255) NOT NULL,
+    `score` INT,
+    `certificate_number` VARCHAR(255),
+    FOREIGN KEY (`staff_id`) REFERENCES `SecurityStaff`(`staff_id`),
+    FOREIGN KEY (`training_id`) REFERENCES `SecurityTrainings`(`training_id`)
+);
+6. VehicleAccess (Доступ транспортних засобів)
 
-11. IncidentResponses (Реакції на інциденти)
-        
-        response_id	INT PRIMARY KEY	Унікальний ідентифікатор реакції
-        incident_id	INT	Зовнішній ключ до таблиці Incidents
-        person_id	INT	Зовнішній ключ до таблиці Persons
-        response_action	TEXT	Дія, яка була вжита
-        timestamp	DATETIME	Час реакції
+CREATE TABLE `VehicleAccess` (
+    `access_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `vehicle_registration` VARCHAR(255) NOT NULL,
+    `driver_id` INT NOT NULL,
+    `entry_time` DATETIME NOT NULL,
+    `exit_time` DATETIME,
+    `purpose` TEXT NOT NULL,
+    `zone_id` INT NOT NULL,
+    `security_check_status` VARCHAR(255) NOT NULL,
+    FOREIGN KEY (`driver_id`) REFERENCES `Persons`(`person_id`),
+    FOREIGN KEY (`zone_id`) REFERENCES `SecurityZones`(`zone_id`)
+);
+7. ThreatAssessments (Оцінки загроз)
 
-12. SecurityStaff (Персонал безпеки)
-        
-        staff_id	INT PRIMARY KEY	Унікальний ідентифікатор працівника
-        name	VARCHAR(255)	Ім'я працівника
-        role	VARCHAR(100)	Роль (наприклад, охоронець, керівник безпеки)
-        contact_info	VARCHAR(255)	Контактна інформація
+CREATE TABLE `ThreatAssessments` (
+    `assessment_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `date` DATE NOT NULL,
+    `assessed_by` INT NOT NULL,
+    `threat_level` VARCHAR(255) NOT NULL,
+    `description` TEXT NOT NULL,
+    `recommendations` TEXT NOT NULL,
+    FOREIGN KEY (`assessed_by`) REFERENCES `SecurityStaff`(`staff_id`)
+);
+Покращення існуючих таблиць
+У таблиці SecurityPolicies поля name, description, effective_date, revision_date мають неправильний тип BIGINT. Виправлення:
 
-13. SecurityShifts (Зміни охорони)
-        
-        shift_id	INT PRIMARY KEY	Унікальний ідентифікатор зміни
-        staff_id	INT	Зовнішній ключ до таблиці SecurityStaff
-        start_time	DATETIME	Початок зміни
-        end_time	DATETIME	Кінець зміни
-        zone_id	INT	Зовнішній ключ до таблиці SecurityZones
 
-14. EmergencyExits (Аварійні виходи)
-        
-        exit_id	INT PRIMARY KEY	Унікальний ідентифікатор виходу
-        location	VARCHAR(255)	Розташування виходу
-        status	VARCHAR(50)	Стан виходу (відкритий, закритий)
-        last_inspection	DATE	Дата останньої перевірки
+ALTER TABLE `SecurityPolicies` 
+MODIFY `name` VARCHAR(255) NOT NULL,
+MODIFY `description` TEXT NOT NULL,
+MODIFY `effective_date` DATE NOT NULL,
+MODIFY `revision_date` DATE;
+Додати індекси для полів, які часто використовуються для пошуку:
 
-15. SecurityPolicies (Політики безпеки)
-    
-    policy_id	INT PRIMARY KEY	Унікальний ідентифікатор політики
-    name	VARCHAR(255)	Назва політики
-    description	TEXT	Опис політики
-    effective_date	DATE	Дата набуття чинності
-    revision_date	DATE	Дата останньої ревізії
+
+CREATE INDEX idx_camera_location ON `Cameras`(`location`);
+CREATE INDEX idx_access_log_timestamp ON `AccessLogs`(`timestamp`);
+CREATE INDEX idx_person_role ON `Persons`(`role`);
+CREATE INDEX idx_incident_status ON `Incidents`(`status`);
