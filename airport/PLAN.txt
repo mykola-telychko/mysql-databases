@@ -7,8 +7,6 @@
 
 - baggage/airlines/finance - upgrade: create a new schema from a description
 
-- пройтися по всім піддиректоріям і перевірити якість і обєм таблиць
-
 - choose first department for fill
 - first try to union all tabs and check scheme . create collage from every screen (from subDirs)
 
@@ -146,6 +144,10 @@ https://ru.bellingcat.com/materialy/2021/06/28/launching-an-open-source-aircraft
 https://studlearn.com/works/details/dispetcherskaya-sluzhba-aeroporta-javamysql-984
 
 -------------------------------------
+DONE and IMPORTANT
+
+
+- (Важливий період в проектуванні, після перших ескізів з кожною наступною ітерацією по всім ай емам-юнітам покращувати і приводити до функціональності код але вести для кожного айтема окремий план і замітки та побажання і цілі для ресьорчу)пройтися по всім піддиректоріям і перевірити якість і обєм таблиць
 
 <!-- NOTICE  begin -->
 ЄСПД - Єдина система програмної документації
