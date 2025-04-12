@@ -60,12 +60,11 @@
 
 -------------------------------------
 
-# MySQL Database Schema for Aircraft Catering Service
+# My Database Schema for Aircraft Catering Service
 
 Here's a complete set of 15 tables that model the in-flight catering service domain:
 
 ## 1. Airlines
-```sql
 CREATE TABLE Airlines (
     airline_id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
@@ -74,10 +73,8 @@ CREATE TABLE Airlines (
     contact_email VARCHAR(100),
     contact_phone VARCHAR(20)
 );
-```
 
 ## 2. Aircraft_Types
-```sql
 CREATE TABLE Aircraft_Types (
     aircraft_type_id INT PRIMARY KEY AUTO_INCREMENT,
     manufacturer VARCHAR(50) NOT NULL,
@@ -87,10 +84,8 @@ CREATE TABLE Aircraft_Types (
     oven_count INT,
     UNIQUE KEY (manufacturer, model)
 );
-```
 
 ## 3. Flights
-```sql
 CREATE TABLE Flights (
     flight_id INT PRIMARY KEY AUTO_INCREMENT,
     flight_number VARCHAR(10) NOT NULL,
@@ -103,31 +98,25 @@ CREATE TABLE Flights (
     FOREIGN KEY (airline_id) REFERENCES Airlines(airline_id),
     FOREIGN KEY (aircraft_type_id) REFERENCES Aircraft_Types(aircraft_type_id)
 );
-```
 
 ## 4. Cabin_Classes
-```sql
 CREATE TABLE Cabin_Classes (
     class_id INT PRIMARY KEY AUTO_INCREMENT,
     class_name VARCHAR(20) NOT NULL UNIQUE,
     description VARCHAR(100),
     service_level INT
 );
-```
 
 Для **великої системи** (особливо якщо передбачається розширення) краще тримати окремо. 
 ## 5. Meal_Types
-```sql
 CREATE TABLE Meal_Types (
     meal_type_id INT PRIMARY KEY AUTO_INCREMENT,
     type_name VARCHAR(50) NOT NULL UNIQUE,
     description VARCHAR(200),
     dietary_category VARCHAR(50)
 );
-```
 
 ## 6. Meal_Items
-```sql
 CREATE TABLE Meal_Items (
     meal_item_id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
@@ -139,10 +128,8 @@ CREATE TABLE Meal_Items (
     calories INT,
     FOREIGN KEY (meal_type_id) REFERENCES Meal_Types(meal_type_id)
 );
-```
 
 ## 7. Beverages
-```sql
 CREATE TABLE Beverages (
     beverage_id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
@@ -151,10 +138,8 @@ CREATE TABLE Beverages (
     serving_temperature VARCHAR(20),
     container_type VARCHAR(30)
 );
-```
 
 ## 8. Catering_Companies
-```sql
 CREATE TABLE Catering_Companies (
     company_id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
@@ -164,10 +149,8 @@ CREATE TABLE Catering_Companies (
     contract_start DATE,
     contract_end DATE
 );
-```
 
 ## 9. Flight_Meal_Plans
-```sql
 CREATE TABLE Flight_Meal_Plans (
     plan_id INT PRIMARY KEY AUTO_INCREMENT,
     flight_id INT NOT NULL,
@@ -182,10 +165,8 @@ CREATE TABLE Flight_Meal_Plans (
     FOREIGN KEY (meal_item_id) REFERENCES Meal_Items(meal_item_id),
     FOREIGN KEY (beverage_id) REFERENCES Beverages(beverage_id)
 );
-```
 
 ## 10. Crew_Members
-```sql
 CREATE TABLE Crew_Members (
     crew_id INT PRIMARY KEY AUTO_INCREMENT,
     airline_id INT NOT NULL,
@@ -195,10 +176,8 @@ CREATE TABLE Crew_Members (
     hire_date DATE,
     FOREIGN KEY (airline_id) REFERENCES Airlines(airline_id)
 );
-```
 
 ## 11. Flight_Crew_Assignments
-```sql
 CREATE TABLE Flight_Crew_Assignments (
     assignment_id INT PRIMARY KEY AUTO_INCREMENT,
     flight_id INT NOT NULL,
@@ -208,10 +187,8 @@ CREATE TABLE Flight_Crew_Assignments (
     FOREIGN KEY (flight_id) REFERENCES Flights(flight_id),
     FOREIGN KEY (crew_id) REFERENCES Crew_Members(crew_id)
 );
-```
 
 ## 12. Special_Meal_Requests
-```sql
 CREATE TABLE Special_Meal_Requests (
     request_id INT PRIMARY KEY AUTO_INCREMENT,
     passenger_name VARCHAR(100) NOT NULL,
@@ -223,10 +200,8 @@ CREATE TABLE Special_Meal_Requests (
     FOREIGN KEY (flight_id) REFERENCES Flights(flight_id),
     FOREIGN KEY (meal_type_id) REFERENCES Meal_Types(meal_type_id)
 );
-```
 
 ## 13. Catering_Orders
-```sql
 CREATE TABLE Catering_Orders (
     order_id INT PRIMARY KEY AUTO_INCREMENT,
     flight_id INT NOT NULL,
@@ -237,10 +212,8 @@ CREATE TABLE Catering_Orders (
     FOREIGN KEY (flight_id) REFERENCES Flights(flight_id),
     FOREIGN KEY (catering_company_id) REFERENCES Catering_Companies(company_id)
 );
-```
 
 ## 14. Catering_Order_Details
-```sql
 CREATE TABLE Catering_Order_Details (
     detail_id INT PRIMARY KEY AUTO_INCREMENT,
     order_id INT NOT NULL,
@@ -253,10 +226,8 @@ CREATE TABLE Catering_Order_Details (
     FOREIGN KEY (beverage_id) REFERENCES Beverages(beverage_id),
     FOREIGN KEY (for_class_id) REFERENCES Cabin_Classes(class_id)
 );
-```
 
 ## 15. Service_Logs
-```sql
 CREATE TABLE Service_Logs (
     log_id INT PRIMARY KEY AUTO_INCREMENT,
     flight_id INT NOT NULL,
@@ -268,7 +239,6 @@ CREATE TABLE Service_Logs (
     FOREIGN KEY (flight_id) REFERENCES Flights(flight_id),
     FOREIGN KEY (crew_id) REFERENCES Crew_Members(crew_id)
 );
-```
 
 This schema covers all aspects of in-flight catering:
 - Airline and aircraft information
@@ -286,7 +256,7 @@ The relationships between tables ensure data integrity while allowing for compre
 
 Замінюю таблицю **Flights** на більш спеціалізовану таблицю **Flight_Service_Schedules**, яка фокусується саме на організації сервісу на борту:
 
-```sql
+
 CREATE TABLE Flight_Service_Schedules (
     service_schedule_id INT PRIMARY KEY AUTO_INCREMENT,
     flight_number VARCHAR(10) NOT NULL,
@@ -309,7 +279,6 @@ CREATE TABLE Flight_Service_Schedules (
     FOREIGN KEY (aircraft_type_id) REFERENCES Aircraft_Types(aircraft_type_id),
     FOREIGN KEY (catering_company_id) REFERENCES Catering_Companies(company_id)
 );
-```
 
 ### Ключові поліпшення цієї таблиці:
 
@@ -332,104 +301,23 @@ CREATE TABLE Flight_Service_Schedules (
 ### Як це допомагає в сервісі на борту:
 
 1. **Планування сервісу**:
-   ```sql
    SELECT flight_number, planned_meal_services, beverage_rounds 
    FROM Flight_Service_Schedules 
    WHERE departure_datetime BETWEEN '2023-12-01' AND '2023-12-31';
-   ```
+   
 
 2. **Підготовка особливих випадків**:
-   ```sql
    SELECT * FROM Flight_Service_Schedules 
    WHERE special_service_notes IS NOT NULL;
-   ```
+   
 
 3. **Координація з кейтерингом**:
-   ```sql
    SELECT fss.flight_number, cc.name AS catering_company, fss.catering_load_time
    FROM Flight_Service_Schedules fss
    JOIN Catering_Companies cc ON fss.catering_company_id = cc.company_id
    WHERE fss.departure_datetime > NOW();
-   ```
-
+   
 Ця структура більш орієнтована на безпосереднє забезпечення сервісу на борту, ніж загальна інформація про рейси.
 
 -------
 describe processes
-<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
-  <!-- Фон -->
-  <rect width="800" height="600" fill="#f9f9f9"/>
-  
-  <!-- Заголовок -->
-  <text x="400" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#333">План-схема обслуговування і планування кейтерингу в літаку</text>
-  
-  <!-- Літак (основний контур) -->
-  <ellipse cx="400" cy="200" rx="350" ry="80" fill="#e6e6e6" stroke="#333" stroke-width="2"/>
-  <rect x="50" y="200" width="700" height="80" fill="#e6e6e6" stroke="#333" stroke-width="2"/>
-  <path d="M750 200 Q 780 240 750 280" fill="#e6e6e6" stroke="#333" stroke-width="2"/>
-  <path d="M50 200 Q 20 240 50 280" fill="#e6e6e6" stroke="#333" stroke-width="2"/>
-  
-  <!-- Кухонні зони в літаку -->
-  <rect x="100" y="210" width="60" height="60" fill="#ffcccc" stroke="#333" stroke-width="2"/>
-  <text x="130" y="250" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#333">Передня кухня</text>
-  
-  <rect x="370" y="210" width="60" height="60" fill="#ffcccc" stroke="#333" stroke-width="2"/>
-  <text x="400" y="250" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#333">Центральна кухня</text>
-  
-  <rect x="640" y="210" width="60" height="60" fill="#ffcccc" stroke="#333" stroke-width="2"/>
-  <text x="670" y="250" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#333">Задня кухня</text>
-  
-  <!-- Процес кейтерингу (в нижній частині) -->
-  <rect x="80" y="350" width="640" height="200" rx="10" ry="10" fill="#eaf2f8" stroke="#333" stroke-width="2"/>
-  
-  <!-- Етапи процесу -->
-  <!-- 1. Планування -->
-  <rect x="100" y="370" width="120" height="60" rx="5" ry="5" fill="#aed6f1" stroke="#333" stroke-width="1"/>
-  <text x="160" y="400" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#333">1. Планування</text>
-  <text x="160" y="420" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#333">- Розробка меню</text>
-  
-  <!-- 2. Підготовка -->
-  <rect x="240" y="370" width="120" height="60" rx="5" ry="5" fill="#d4efdf" stroke="#333" stroke-width="1"/>
-  <text x="300" y="400" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#333">2. Підготовка</text>
-  <text x="300" y="420" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#333">- Закупівля продуктів</text>
-  
-  <!-- 3. Приготування -->
-  <rect x="380" y="370" width="120" height="60" rx="5" ry="5" fill="#fcf3cf" stroke="#333" stroke-width="1"/>
-  <text x="440" y="400" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#333">3. Приготування</text>
-  <text x="440" y="420" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#333">- Кухня на землі</text>
-  
-  <!-- 4. Доставка -->
-  <rect x="520" y="370" width="120" height="60" rx="5" ry="5" fill="#f5cba7" stroke="#333" stroke-width="1"/>
-  <text x="580" y="400" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#333">4. Доставка</text>
-  <text x="580" y="420" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#333">- Завантаження в літак</text>
-  
-  <!-- Стрілки між етапами -->
-  <line x1="220" y1="400" x2="240" y2="400" stroke="#333" stroke-width="2"/>
-  <polygon points="238,395 248,400 238,405" fill="#333"/>
-  
-  <line x1="360" y1="400" x2="380" y2="400" stroke="#333" stroke-width="2"/>
-  <polygon points="378,395 388,400 378,405" fill="#333"/>
-  
-  <line x1="500" y1="400" x2="520" y2="400" stroke="#333" stroke-width="2"/>
-  <polygon points="518,395 528,400 518,405" fill="#333"/>
-  
-  <!-- Детальні процеси обслуговування -->
-  <rect x="100" y="450" width="600" height="80" rx="5" ry="5" fill="#ebdef0" stroke="#333" stroke-width="1"/>
-  <text x="400" y="470" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#333">5. Обслуговування на борту</text>
-  
-  <!-- Обслуговування - деталі -->
-  <text x="130" y="490" font-family="Arial, sans-serif" font-size="12" text-anchor="start" fill="#333">• Перший клас</text>
-  <text x="130" y="510" font-family="Arial, sans-serif" font-size="12" text-anchor="start" fill="#333">• Бізнес клас</text>
-  
-  <text x="310" y="490" font-family="Arial, sans-serif" font-size="12" text-anchor="start" fill="#333">• Економ клас</text>
-  <text x="310" y="510" font-family="Arial, sans-serif" font-size="12" text-anchor="start" fill="#333">• Спеціальні раціони</text>
-  
-  <text x="490" y="490" font-family="Arial, sans-serif" font-size="12" text-anchor="start" fill="#333">• Напої</text>
-  <text x="490" y="510" font-family="Arial, sans-serif" font-size="12" text-anchor="start" fill="#333">• Прибирання</text>
-  
-  <!-- Легенда -->
-  <rect x="650" y="500" width="15" height="15" fill="#ffcccc" stroke="#333" stroke-width="1"/>
-  <text x="670" y="513" font-family="Arial, sans-serif" font-size="12" text-anchor="start" fill="#333">Кухонні зони</text>
-</svg>
-
-
