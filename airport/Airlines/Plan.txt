@@ -115,6 +115,7 @@ CREATE TABLE Cabin_Classes (
 );
 ```
 
+Для **великої системи** (особливо якщо передбачається розширення) краще тримати окремо. 
 ## 5. Meal_Types
 ```sql
 CREATE TABLE Meal_Types (
@@ -280,4 +281,76 @@ This schema covers all aspects of in-flight catering:
 
 The relationships between tables ensure data integrity while allowing for comprehensive reporting on catering operations.
 
+------------------
+заміна табоиці флайтс
+
+Замінюю таблицю **Flights** на більш спеціалізовану таблицю **Flight_Service_Schedules**, яка фокусується саме на організації сервісу на борту:
+
+```sql
+CREATE TABLE Flight_Service_Schedules (
+    service_schedule_id INT PRIMARY KEY AUTO_INCREMENT,
+    flight_number VARCHAR(10) NOT NULL,
+    airline_id INT NOT NULL,
+    aircraft_type_id INT NOT NULL,
+    departure_datetime DATETIME NOT NULL,
+    flight_duration_minutes INT NOT NULL,
+    
+    -- Інформація для сервісу
+    planned_meal_services TINYINT NOT NULL DEFAULT 1 COMMENT 'Кількість запланованих харчових сервісів',
+    beverage_rounds TINYINT NOT NULL DEFAULT 2 COMMENT 'Кількість запланованих роздач напоїв',
+    special_service_notes TEXT COMMENT 'Особливі вказівки щодо обслуговування',
+    is_premium_route BOOLEAN DEFAULT FALSE COMMENT 'Прапор преміум-маршруту',
+    
+    -- Логістика кейтерингу
+    catering_load_time DATETIME COMMENT 'Час завантаження кейтерингу',
+    catering_company_id INT,
+    
+    FOREIGN KEY (airline_id) REFERENCES Airlines(airline_id),
+    FOREIGN KEY (aircraft_type_id) REFERENCES Aircraft_Types(aircraft_type_id),
+    FOREIGN KEY (catering_company_id) REFERENCES Catering_Companies(company_id)
+);
+```
+
+### Ключові поліпшення цієї таблиці:
+
+1. **Специфіка для сервісу**:
+   - Чіткі поля для кількості харчових сервісів і роздач напоїв
+   - Місце для спеціальних інструкцій щодо обслуговування
+
+2. **Практичні дані для бортпровідників**:
+   - Тривалість польоту в хвилинах (для планування сервісу)
+   - Преміум-маршрут (ознака особливого сервісу)
+
+3. **Логістика кейтерингу**:
+   - Час завантаження їжі на борт
+   - Пряме посилання на кейтерингову компанію
+
+4. **Оптимізація для звітів**:
+   - Легко аналізувати кількість сервісів за маршрутами
+   - Просто планувати навантаження на бортпровідників
+
+### Як це допомагає в сервісі на борту:
+
+1. **Планування сервісу**:
+   ```sql
+   SELECT flight_number, planned_meal_services, beverage_rounds 
+   FROM Flight_Service_Schedules 
+   WHERE departure_datetime BETWEEN '2023-12-01' AND '2023-12-31';
+   ```
+
+2. **Підготовка особливих випадків**:
+   ```sql
+   SELECT * FROM Flight_Service_Schedules 
+   WHERE special_service_notes IS NOT NULL;
+   ```
+
+3. **Координація з кейтерингом**:
+   ```sql
+   SELECT fss.flight_number, cc.name AS catering_company, fss.catering_load_time
+   FROM Flight_Service_Schedules fss
+   JOIN Catering_Companies cc ON fss.catering_company_id = cc.company_id
+   WHERE fss.departure_datetime > NOW();
+   ```
+
+Ця структура більш орієнтована на безпосереднє забезпечення сервісу на борту, ніж загальна інформація про рейси.
 
