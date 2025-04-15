@@ -1,5 +1,7 @@
 # PASSENGERS
 
+CANONICAL FLIGHTS 
+https://github.com/mykola-telychko/mysql-databases/blob/main/airport/README.md
 
 RESEARCH this tables 
 

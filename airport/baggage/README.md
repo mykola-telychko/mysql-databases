@@ -1,5 +1,8 @@
 # BUGGAGE
 
+CANONICAL FLIGHTS 
+https://github.com/mykola-telychko/mysql-databases/blob/main/airport/README.md
+
 -- Is it possible to merge some tables (about)? 
 
 1. Baggage (Багаж)

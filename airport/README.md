@@ -37,6 +37,20 @@ Class Table: Service To store information about different classes of service (ec
 Currency Table: To store information about the currencies in which payments are made.
 
 Promo Codes Table: To store information about promo codes and discounts.
+
+CANONICAL TABS
+CREATE TABLE `Flights`(
+    (flight_number is flight_id?)
+    `flight_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `airline_id` INT NOT NULL,
+    `aircraft_type_id` INT NOT NULL,
+    `departure_airport` VARCHAR(255) NOT NULL,
+    `arrival_airport` VARCHAR(255) NOT NULL,
+     `scheduled_departure` DATETIME NOT NULL,
+     `scheduled_arrival` DATETIME NOT NULL,
+    `departure_time` DATETIME NOT NULL,
+    `arrival_time` DATETIME NOT NULL
+);
 <!-- TABLES  end -->
 
 ------------------------------

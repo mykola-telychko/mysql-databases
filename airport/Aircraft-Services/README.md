@@ -1,5 +1,9 @@
 # AIRCRAFT-SERVICES
 
+
+CANONICAL FLIGHTS 
+https://github.com/mykola-telychko/mysql-databases/blob/main/airport/README.md
+
 15 таблиць які відображають роботу всіх сервісів, що обслуговують літак, 
 включаючи ремонтні майстерні, заправку та обслуговування борту:
 

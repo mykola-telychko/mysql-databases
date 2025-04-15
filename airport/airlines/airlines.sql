@@ -31,15 +31,7 @@ CREATE TABLE `Agreements`(
     `end_date` DATE NOT NULL,
     `terms` TEXT NOT NULL
 );
-CREATE TABLE `Flights`(
-    `flight_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `airline_id` INT NOT NULL,
-    `aircraft_id` INT NOT NULL,
-    `departure_airport` VARCHAR(255) NOT NULL,
-    `arrival_airport` VARCHAR(255) NOT NULL,
-    `departure_time` DATETIME NOT NULL,
-    `arrival_time` DATETIME NOT NULL
-);
+
 CREATE TABLE `Schedules`(
     `schedule_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `flight_id` INT NOT NULL,
