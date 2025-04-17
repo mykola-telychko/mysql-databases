@@ -1,13 +1,8 @@
-### **Як працює кейтеринг у літаках?**  
-Кейтеринг у авіації — це організація харчування пасажирів під час польоту. 
-Він включає приготування, доставку та роздачу їжі та напоїв.
-Це складна система, в якій задіяні авіакомпанії, спеціалізовані кейтерингові служби та бортпровідники.  
 
 Services. це банкет на якому крім планових страв ще є замовлені. Airlines-Aircraft’s-services. Побудувати правильну ієрархію.
 Чи має бути частиною айркрафт кейтеринг який вказаний в юніті айркрафт. 
 Кейтеринг переплановується в залежності від місця куди прилітає літак¿ чи він має продукти туди і назад
 
----
 
 ## **Хто відповідає за кейтеринг у літаках?**  
 
@@ -323,3 +318,8 @@ CREATE TABLE Flight_Service_Schedules (
 -------
 Main script for presentation
 describe processes 
+
+### **Як працює кейтеринг у літаках?**  
+Кейтеринг у авіації — це організація харчування пасажирів під час польоту. 
+Він включає приготування, доставку та роздачу їжі та напоїв.
+Це складна система, в якій задіяні авіакомпанії, спеціалізовані кейтерингові служби та бортпровідники. -- Aviation catering refers to the organization of in-flight meal services for passengers. This complex system encompasses food preparation, delivery, and distribution of meals and beverages onboard. It involves multiple stakeholders including airlines, specialized catering companies, and flight attendants.
