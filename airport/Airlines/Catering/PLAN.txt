@@ -1,0 +1,4 @@
+- create simple example one-unit catering company
+(4-5 examples for airlines-catering-companies)
+
+- draw schemes 
