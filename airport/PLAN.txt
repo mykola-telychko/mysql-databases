@@ -1,4 +1,9 @@
+- infrastr/ dispatcher - build 
 
+- build hierarchy structure for all entetity
+
+- draw main scheme 
+------
 - Security check readme.md and build ralations
 
 - Services aircraft - last check & upgrade (why separate FuelTypes)
