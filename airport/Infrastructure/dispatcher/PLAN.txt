@@ -1,0 +1,221 @@
+Як "берегти" сесії та ефіри:
+Сесії:
+
+Використовуйте HTTPS для шифрування.
+
+Зберігайте токени сесій у безпечному сховищі (напр., Redis) з обмеженим TTL.
+
+Логуйте IP-адреси та час активності для виявлення аномалій.
+
+Використовуйте JWT з коротким терміном дії (напр., 15 хв) та refresh-токенами.
+
+Ефіри (радіочастоти):
+
+Призначайте частоти динамічно через таблицю RadioFrequencies для уникнення конфліктів.
+
+Шифруйте голосові повідомлення (напр., AES-256).
+
+Логуйте всі комунікації у окремій системі (напр., FlightEvents).
+
+Обмежуйте доступ до частот за рівнями сертифікації (AirTrafficControllers.CertificationLevel).
+
+--------------
+
+Flights (ID, FlightNumber, Status, DepartureTime, ArrivalTime)
+Базовий запис про рейси, їх статус та розклад.
+
+Airplanes (ID, Model, RegistrationNumber, Capacity, LastMaintenanceDate)
+Дані літаків, їх технічний стан.
+
+Pilots (ID, Name, LicenseNumber, ExperienceHours)
+Інформація про пілотів та їх кваліфікацію.
+
+CrewMembers (ID, Name, Role, AssignedFlightID)
+Екіпажі рейсів (бортпровідники, інженери).
+
+AirTrafficControllers (ID, Name, ShiftSchedule, CertificationLevel)
+Диспетчери, їх графік та рівень доступу.
+
+Airports (ID, Name, IATACode, RunwayCount)
+Дані аеропортів (відправлення/прибуття).
+
+Runways (ID, AirportID, Status, Length)
+Стан злітно-посадкових смуг.
+
+Gates (ID, AirportID, Status, AssignedFlightID)
+Контроль гейтів для літаків.
+
+Sessions (ID, ControllerID, LoginTime, LogoutTime, Token)
+Сесії диспетчерів для автентифікації та відстеження активності.
+
+RadioFrequencies (ID, Frequency, Purpose, AssignedControllerID)
+Радіочастоти для комунікації (ефіри).
+
+FlightEvents (ID, FlightID, EventType, Timestamp, ControllerID)
+Журнал подій: затримки, аварії, зміни маршруту.
+
+MaintenanceLogs (ID, AirplaneID, IssueDescription, ResolutionDate)
+Технічне обслуговування літаків.
+
+FlightPlans (ID, FlightID, RouteCoordinates, Altitude, FuelEstimation)
+Детальні маршрутні плани.
+
+WeatherData (ID, AirportID, WindSpeed, Visibility, Timestamp)
+Метеорологічні умови для прийняття рішень.
+
+AlertsNotifications (ID, Message, Severity, Timestamp, RecipientID)
+Система попереджень для диспетчерів/екіпажів.
+
+------------------
+
+-- 1. Flights
+CREATE TABLE Flights (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    FlightNumber VARCHAR(10) NOT NULL UNIQUE,
+    Status ENUM('Scheduled', 'Boarding', 'InAir', 'Landed', 'Cancelled') NOT NULL,
+    DepartureTime DATETIME NOT NULL,
+    ArrivalTime DATETIME NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 2. Airplanes
+CREATE TABLE Airplanes (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    Model VARCHAR(50) NOT NULL,
+    RegistrationNumber VARCHAR(20) NOT NULL UNIQUE,
+    Capacity INT NOT NULL,
+    LastMaintenanceDate DATE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 3. Pilots
+CREATE TABLE Pilots (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(100) NOT NULL,
+    LicenseNumber VARCHAR(20) NOT NULL UNIQUE,
+    ExperienceHours INT DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 4. CrewMembers
+CREATE TABLE CrewMembers (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(100) NOT NULL,
+    Role VARCHAR(50) NOT NULL,
+    AssignedFlightID INT,
+    FOREIGN KEY (AssignedFlightID) REFERENCES Flights(ID) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 5. AirTrafficControllers
+CREATE TABLE AirTrafficControllers (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(100) NOT NULL,
+    ShiftSchedule TEXT,
+    CertificationLevel ENUM('Junior', 'Senior', 'Chief') DEFAULT 'Junior'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 6. Airports
+CREATE TABLE Airports (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(100) NOT NULL,
+    IATACode CHAR(3) NOT NULL UNIQUE,
+    RunwayCount INT DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 7. Runways
+CREATE TABLE Runways (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    AirportID INT NOT NULL,
+    Status ENUM('Active', 'Maintenance', 'Closed') DEFAULT 'Active',
+    Length INT NOT NULL,  -- в метрах
+    FOREIGN KEY (AirportID) REFERENCES Airports(ID) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 8. Gates
+CREATE TABLE Gates (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    AirportID INT NOT NULL,
+    Status ENUM('Available', 'Occupied', 'Maintenance'),
+    AssignedFlightID INT,
+    FOREIGN KEY (AirportID) REFERENCES Airports(ID) ON DELETE CASCADE,
+    FOREIGN KEY (AssignedFlightID) REFERENCES Flights(ID) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 9. Sessions
+CREATE TABLE Sessions (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    ControllerID INT NOT NULL,
+    LoginTime DATETIME NOT NULL,
+    LogoutTime DATETIME,
+    Token VARCHAR(255) NOT NULL UNIQUE,
+    FOREIGN KEY (ControllerID) REFERENCES AirTrafficControllers(ID) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 10. RadioFrequencies
+CREATE TABLE RadioFrequencies (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    Frequency VARCHAR(10) NOT NULL UNIQUE,
+    Purpose TEXT,
+    AssignedControllerID INT,
+    FOREIGN KEY (AssignedControllerID) REFERENCES AirTrafficControllers(ID) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 11. FlightEvents
+CREATE TABLE FlightEvents (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    FlightID INT NOT NULL,
+    EventType VARCHAR(50) NOT NULL,
+    Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    ControllerID INT NOT NULL,
+    FOREIGN KEY (FlightID) REFERENCES Flights(ID) ON DELETE CASCADE,
+    FOREIGN KEY (ControllerID) REFERENCES AirTrafficControllers(ID)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 12. MaintenanceLogs
+CREATE TABLE MaintenanceLogs (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    AirplaneID INT NOT NULL,
+    IssueDescription TEXT NOT NULL,
+    ResolutionDate DATE,
+    FOREIGN KEY (AirplaneID) REFERENCES Airplanes(ID) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 13. FlightPlans
+CREATE TABLE FlightPlans (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    FlightID INT NOT NULL UNIQUE,
+    RouteCoordinates TEXT NOT NULL,
+    Altitude INT NOT NULL,  -- в метрах
+    FuelEstimation DECIMAL(10,2) NOT NULL,  -- в літрах
+    FOREIGN KEY (FlightID) REFERENCES Flights(ID) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 14. WeatherData
+CREATE TABLE WeatherData (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    AirportID INT NOT NULL,
+    WindSpeed DECIMAL(5,2),  -- м/с
+    Visibility INT,  -- в метрах
+    Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (AirportID) REFERENCES Airports(ID) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 15. AlertsNotifications
+CREATE TABLE AlertsNotifications (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    Message TEXT NOT NULL,
+    Severity ENUM('Low', 'Medium', 'High') DEFAULT 'Medium',
+    Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    RecipientID INT NOT NULL  -- Може посилатися на різні таблиці (потрібно додаткове узгодження)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-------------------------
+
+Обмеження:
+Для AlertsNotifications.RecipientID потрібно додати додаткову логіку (наприклад, поле RecipientType)
+Для полів з часом (DATETIME) рекомендується додати індекси для швидкого пошуку
+Для унікальних полів (FlightNumber, RegistrationNumber) додано UNIQUE-обмеження
+
+Оптимізація:
+CREATE INDEX idx_flight_status ON Flights(Status);
+CREATE INDEX idx_flight_departure ON Flights(DepartureTime);
+CREATE INDEX idx_session_token ON Sessions(Token);
+Ця структура забезпечує цілісність даних та відповідає вимогам 3NF (Третьої нормальної форми). 
+Для продуктивного використання рекомендується додати тригери для автоматизації повідомлень та подій.
