@@ -38,7 +38,8 @@ Currency Table: To store information about the currencies in which payments are 
 
 Promo Codes Table: To store information about promo codes and discounts.
 
-CANONICAL TABS
+<!-- CANONICAL TABS -- begin -->
+<!-- CANONICAL TABS -- begin -->
 CREATE TABLE `Flights`(
     (flight_number is flight_id?)
     `flight_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -51,6 +52,58 @@ CREATE TABLE `Flights`(
     `departure_time` DATETIME NOT NULL,
     `arrival_time` DATETIME NOT NULL
 );
+CREATE TABLE flights (
+    flight_id INT PRIMARY KEY AUTO_INCREMENT,
+    flight_number VARCHAR(10) NOT NULL,
+    airline_id INT NOT NULL,
+    aircraft_id INT NOT NULL,
+    origin_airport_id INT NOT NULL,
+    destination_airport_id INT NOT NULL,
+    scheduled_arrival DATETIME NOT NULL,
+    scheduled_departure DATETIME NOT NULL,
+    actual_arrival DATETIME,
+    actual_departure DATETIME,
+    needs_deicing BOOLEAN DEFAULT FALSE,
+    cleaning_status ENUM('not_started', 'in_progress', 'completed', 'skipped') DEFAULT 'not_started',
+    FOREIGN KEY (airline_id) REFERENCES airlines(airline_id),
+    FOREIGN KEY (aircraft_id) REFERENCES aircrafts(aircraft_id),
+    FOREIGN KEY (origin_airport_id) REFERENCES airports(airport_id),
+    FOREIGN KEY (destination_airport_id) REFERENCES airports(airport_id)
+);
+CREATE TABLE aircraft_types (
+    type_id INT PRIMARY KEY AUTO_INCREMENT,
+    icao_code CHAR(4) NOT NULL,
+    manufacturer VARCHAR(50) NOT NULL,
+    model VARCHAR(50) NOT NULL,
+    seats_capacity INT,
+    cleaning_time_min INT COMMENT 'Середній час прибирання (хвилини)',
+    deicing_time_min INT COMMENT 'Середній час деісінгу (хвилини)'
+);
+CREATE TABLE aircrafts (
+    aircraft_id INT PRIMARY KEY AUTO_INCREMENT,
+    registration_number VARCHAR(10) NOT NULL UNIQUE,
+    airline_id INT NOT NULL,
+    type_id INT NOT NULL,
+    last_deep_cleaning DATE,
+    next_scheduled_wash DATE,
+    FOREIGN KEY (airline_id) REFERENCES airlines(airline_id),
+    FOREIGN KEY (type_id) REFERENCES aircraft_types(type_id)
+);
+
+МАЄ БУТИ ЧАСТИНОЮ ВІДГУКІВ ПРО ПОЛІТ?- Відгуки/скарги (cleaning_feedback)
+Мета: Фіксація відгуків авіакомпаній або пасажирів щодо якості прибирання.
+CREATE TABLE cleaning_feedback (
+    feedback_id INT PRIMARY KEY AUTO_INCREMENT,
+    flight_id INT NOT NULL,
+    feedback_text TEXT NOT NULL,
+    submitted_by ENUM('airline', 'passenger') NOT NULL,
+    submission_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    resolved BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (flight_id) REFERENCES flights(flight_id)
+);
+<!-- CANONICAL TABS -- end -->
+<!-- CANONICAL TABS -- end -->
+
 <!-- TABLES  end -->
 
 ------------------------------
