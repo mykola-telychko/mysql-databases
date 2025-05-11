@@ -1,6 +1,8 @@
 # cleaning-service
 
-Клінінг повітряних суден — це складний процес, який включає прибирання салону, дезінфекцію, знежирення поверхонь, видалення льоду та снігу, а також обслуговування зовнішніх частин літака. Ось основні аспекти цієї роботи:
+
+
+Клінінг повітряних суден — це складний процес, який включає прибирання салону, дезінфекцію, знежирення поверхонь, видалення льоду та снігу, а також обслуговування зовнішніх частин літака.
 
 1. Хто займається прибиранням літаків?
 А. Внутрішній клінінг (салон, кабіна пілотів, туалети)
@@ -11,12 +13,10 @@
 Глибоке прибирання після останнього рейсу (night stop cleaning).
 
 Дезінфекцію (особливо після пандемії COVID-19).
-§
 Б. Зовнішнє очищення (крила, фюзеляж, вікна, шасі)
 Деісінг (антиобледеніння) – проводиться спеціальними машинами з розпилювачами, які наносять розчин гліколю (часто Type I або Type IV).
 
 Видалення снігу – використовуються снігоочисники, теплові гармати, механічні щітки.
-
 Мийка літака – проводиться періодично (раз на 1–3 місяці) для зняття бруду, палива, комах.
 
 2. Як організоване чергування та прибирання в аеропортах?
@@ -24,14 +24,12 @@
 Turnaround Cleaning (між рейсами) – 20–60 хвилин (залежить від класу літака).
 
 Night Stop Cleaning (глибоке) – 2–4 години (вночі або під час тривалої стоянки).
-
 Деісінг – перед зльотом у зимовий період (може займати 5–20 хвилин).
 
 Б. Хто виконує роботи?
 Власні служби авіакомпанії (наприклад, Lufthansa Technik, Emirates Engineering).
 
 Аутсорсингові клінінгові компанії (наприклад, Menzies Aviation, Swissport, Dnata).
-
 Аеропортівські служби (якщо аеропорт надає послуги).
 
 В. Логістика в різних аеропортах
@@ -80,7 +78,6 @@ Ad-hoc обслуговування – разові замовлення (на�
 Тут є деякі нові поля які мені не знайому - вивчити їх доцільність
 
 1. Авіакомпанії (airlines)
-
 CREATE TABLE airlines (
     airline_id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
@@ -90,8 +87,8 @@ CREATE TABLE airlines (
     contact_phone VARCHAR(20),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-2. Аеропорти (airports)
 
+2. Аеропорти (airports)
 CREATE TABLE airports (
     airport_id INT PRIMARY KEY AUTO_INCREMENT,
     iata_code CHAR(3) NOT NULL,
@@ -103,7 +100,6 @@ CREATE TABLE airports (
 );
 
 3. Послуги клінінгу (cleaning_services)
-
 CREATE TABLE cleaning_services (
     service_id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL,
@@ -112,8 +108,8 @@ CREATE TABLE cleaning_services (
     duration_min INT NOT NULL,
     service_level ENUM('quick', 'standard', 'deep') NOT NULL
 );
-4. Персонал (staff)
 
+4. Персонал (staff)
 CREATE TABLE staff (
     staff_id INT PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(50) NOT NULL,
@@ -137,7 +133,6 @@ CREATE TABLE staff_certifications (
 );
 
 5. Обладнання (equipment)
-
 CREATE TABLE equipment (
     equipment_id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
@@ -148,8 +143,8 @@ CREATE TABLE equipment (
     airport_id INT,
     FOREIGN KEY (airport_id) REFERENCES airports(airport_id)
 );
-6. Робочі зміни (work_shifts)
 
+6. Робочі зміни (work_shifts)
 CREATE TABLE work_shifts (
     shift_id INT PRIMARY KEY AUTO_INCREMENT,
     shift_date DATE NOT NULL,
@@ -160,8 +155,8 @@ CREATE TABLE work_shifts (
     FOREIGN KEY (airport_id) REFERENCES airports(airport_id),
     FOREIGN KEY (team_leader_id) REFERENCES staff(staff_id)
 );
-7. Призначення персоналу (staff_assignments)
 
+7. Призначення персоналу (staff_assignments)
 CREATE TABLE staff_assignments (
     assignment_id INT PRIMARY KEY AUTO_INCREMENT,
     staff_id INT NOT NULL,
@@ -172,7 +167,6 @@ CREATE TABLE staff_assignments (
 );
 
 8. Завдання на прибирання (cleaning_tasks)
-
 CREATE TABLE cleaning_tasks (
     task_id INT PRIMARY KEY AUTO_INCREMENT,
     flight_id INT NOT NULL,
@@ -187,8 +181,20 @@ CREATE TABLE cleaning_tasks (
     FOREIGN KEY (service_id) REFERENCES cleaning_services(service_id),
     FOREIGN KEY (assigned_shift_id) REFERENCES work_shifts(shift_id)
 );
-9. Призначення обладнання (equipment_assignments)
+Графік технічного обслуговування обладнання (equipment_maintenance_schedule)
+Мета: Планування майбутніх ТО для обладнання.
+CREATE TABLE equipment_maintenance_schedule (
+    schedule_id INT PRIMARY KEY AUTO_INCREMENT,
+    equipment_id INT NOT NULL,
+    scheduled_date DATE NOT NULL,
+    maintenance_type ENUM('preventive', 'corrective') NOT NULL,
+    technician_id INT,
+    notes TEXT,
+    FOREIGN KEY (equipment_id) REFERENCES equipment(equipment_id),
+    FOREIGN KEY (technician_id) REFERENCES staff(staff_id)
+);
 
+9. Призначення обладнання (equipment_assignments)
 CREATE TABLE equipment_assignments (
     assignment_id INT PRIMARY KEY AUTO_INCREMENT,
     task_id INT NOT NULL,
@@ -200,8 +206,8 @@ CREATE TABLE equipment_assignments (
     FOREIGN KEY (equipment_id) REFERENCES equipment(equipment_id),
     FOREIGN KEY (operator_id) REFERENCES staff(staff_id)
 );
-10. Використані матеріали (consumables_usage)
 
+10. Використані матеріали (consumables_usage)
 CREATE TABLE consumables_usage (
     usage_id INT PRIMARY KEY AUTO_INCREMENT,
     task_id INT NOT NULL,
@@ -210,8 +216,8 @@ CREATE TABLE consumables_usage (
     unit VARCHAR(20) NOT NULL,
     FOREIGN KEY (task_id) REFERENCES cleaning_tasks(task_id)
 );
-11. Перевірки якості (quality_checks)
 
+11. Перевірки якості (quality_checks)
 CREATE TABLE quality_checks (
     check_id INT PRIMARY KEY AUTO_INCREMENT,
     task_id INT NOT NULL,
@@ -222,8 +228,8 @@ CREATE TABLE quality_checks (
     FOREIGN KEY (task_id) REFERENCES cleaning_tasks(task_id),
     FOREIGN KEY (inspector_id) REFERENCES staff(staff_id)
 );
-12. Контракти з авіакомпаніями (service_contracts)
 
+12. Контракти з авіакомпаніями (service_contracts)
 CREATE TABLE service_contracts (
     contract_id INT PRIMARY KEY AUTO_INCREMENT,
     airline_id INT NOT NULL,
@@ -240,6 +246,7 @@ CREATE TABLE service_contracts (
 -------------
 here new tables 
 
+Це для АДМІНІСТРАЦІЇ клінінгу . -------------------------
 Склад витратних матеріалів (consumables_inventory)
 Мета: Відстежувати залишки витратних матеріалів (наприклад, миючі засоби, дезінфектанти).
 CREATE TABLE consumables_inventory (
@@ -261,19 +268,7 @@ CREATE TABLE suppliers (
     contact_email VARCHAR(100),
     supplied_item_type ENUM('equipment', 'consumables') NOT NULL
 );
-
-Графік технічного обслуговування обладнання (equipment_maintenance_schedule)
-Мета: Планування майбутніх ТО для обладнання.
-CREATE TABLE equipment_maintenance_schedule (
-    schedule_id INT PRIMARY KEY AUTO_INCREMENT,
-    equipment_id INT NOT NULL,
-    scheduled_date DATE NOT NULL,
-    maintenance_type ENUM('preventive', 'corrective') NOT NULL,
-    technician_id INT,
-    notes TEXT,
-    FOREIGN KEY (equipment_id) REFERENCES equipment(equipment_id),
-    FOREIGN KEY (technician_id) REFERENCES staff(staff_id)
-);
+-------------------------
 
 Організація клінінгу в авіалініях: хто відповідає та як це працює
 Відповідальні особи/відділи:

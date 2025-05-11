@@ -1,0 +1,5 @@
+cleaning_tasks equipment_maintenance_schedule
+чи можна оьєднати ці таблиці 
+
+staff_certifications і staff
+вирізати і внести в головну таблицю аеропорту staff
