@@ -116,20 +116,9 @@ CREATE TABLE staff (
     last_name VARCHAR(50) NOT NULL,
     position VARCHAR(50) NOT NULL,
     hire_date DATE NOT NULL,
-    certification VARCHAR(100),
+    certifications JSON DEFAULT (JSON_ARRAY()),
     is_deicing_certified BOOLEAN DEFAULT FALSE,
     status ENUM('active', 'on_leave', 'terminated') DEFAULT 'active'
-);
-MOЖЕ БУТИ ЧАСТИНОЮ staff ЗАГАЛЬНОЇ 
-Сертифікація персоналу (staff_certifications)
-Мета: Деталізація сертифікацій працівників (наприклад, дезінфекція, робота з хімікатами).
-CREATE TABLE staff_certifications (
-    certification_id INT PRIMARY KEY AUTO_INCREMENT,
-    staff_id INT NOT NULL,
-    certification_name VARCHAR(100) NOT NULL,
-    issue_date DATE NOT NULL,
-    expiry_date DATE NOT NULL,
-    FOREIGN KEY (staff_id) REFERENCES staff(staff_id)
 );
 
 5. Обладнання (equipment)
@@ -180,18 +169,6 @@ CREATE TABLE cleaning_tasks (
     FOREIGN KEY (flight_id) REFERENCES flights(flight_id),
     FOREIGN KEY (service_id) REFERENCES cleaning_services(service_id),
     FOREIGN KEY (assigned_shift_id) REFERENCES work_shifts(shift_id)
-);
-Графік технічного обслуговування обладнання (equipment_maintenance_schedule)
-Мета: Планування майбутніх ТО для обладнання.
-CREATE TABLE equipment_maintenance_schedule (
-    schedule_id INT PRIMARY KEY AUTO_INCREMENT,
-    equipment_id INT NOT NULL,
-    scheduled_date DATE NOT NULL,
-    maintenance_type ENUM('preventive', 'corrective') NOT NULL,
-    technician_id INT,
-    notes TEXT,
-    FOREIGN KEY (equipment_id) REFERENCES equipment(equipment_id),
-    FOREIGN KEY (technician_id) REFERENCES staff(staff_id)
 );
 
 9. Призначення обладнання (equipment_assignments)
@@ -305,3 +282,139 @@ CREATE TABLE suppliers (
     Власний персонал аеропорту: Якщо service_contracts.contract_type = 'full_service'.
     Сторонні підрядники: Якщо аеропорт не має cleaning_services_available = TRUE.
     Персонал авіакомпанії: Для VIP-рейсів або спецзавдань (відображається у cleaning_tasks.supervisor_notes).
+
+----------
+CREATE TABLE cleaning_tasks (
+    task_id INT PRIMARY KEY AUTO_INCREMENT,
+    flight_id INT NOT NULL,
+    service_id INT NOT NULL,
+    assigned_shift_id INT NOT NULL,
+    scheduled_start DATETIME NOT NULL,
+    actual_start DATETIME,
+    actual_end DATETIME,
+    status ENUM('pending', 'in_progress', 'completed', 'cancelled') DEFAULT 'pending',
+    supervisor_notes TEXT,
+    FOREIGN KEY (flight_id) REFERENCES flights(flight_id),
+    FOREIGN KEY (service_id) REFERENCES cleaning_services(service_id),
+    FOREIGN KEY (assigned_shift_id) REFERENCES work_shifts(shift_id)
+);
+Графік технічного обслуговування обладнання (equipment_maintenance_schedule)
+Мета: Планування майбутніх ТО для обладнання.
+CREATE TABLE equipment_maintenance_schedule (
+    schedule_id INT PRIMARY KEY AUTO_INCREMENT,
+    equipment_id INT NOT NULL,
+    scheduled_date DATE NOT NULL,
+    maintenance_type ENUM('preventive', 'corrective') NOT NULL,
+    technician_id INT,
+    notes TEXT,
+    FOREIGN KEY (equipment_id) REFERENCES equipment(equipment_id),
+    FOREIGN KEY (technician_id) REFERENCES staff(staff_id)
+);
+
+CONVERT TO ONE TABLE 
+CREATE TABLE tasks (
+    task_id INT PRIMARY KEY AUTO_INCREMENT,
+    task_type ENUM('cleaning', 'maintenance') NOT NULL,
+    -- Загальні поля
+    scheduled_start DATETIME NOT NULL,
+    actual_start DATETIME,
+    actual_end DATETIME,
+    status ENUM('pending', 'in_progress', 'completed', 'cancelled') DEFAULT 'pending',
+    notes TEXT,
+    -- Специфічні поля для прибирання
+    flight_id INT,
+    service_id INT,
+    assigned_shift_id INT,
+    -- Специфічні поля для ТО
+    equipment_id INT,
+    maintenance_type ENUM('preventive', 'corrective'),
+    technician_id INT,
+    -- Зовнішні ключі
+    FOREIGN KEY (flight_id) REFERENCES flights(flight_id),
+    FOREIGN KEY (service_id) REFERENCES cleaning_services(service_id),
+    FOREIGN KEY (assigned_shift_id) REFERENCES work_shifts(shift_id),
+    FOREIGN KEY (equipment_id) REFERENCES equipment(equipment_id),
+    FOREIGN KEY (technician_id) REFERENCES staff(staff_id),
+    -- Обмеження для забезпечення цілісності даних
+    CONSTRAINT chk_cleaning_fields CHECK (
+        (task_type = 'cleaning' 
+        AND flight_id IS NOT NULL 
+        AND service_id IS NOT NULL 
+        AND assigned_shift_id IS NOT NULL 
+        AND equipment_id IS NULL 
+        AND maintenance_type IS NULL 
+        AND technician_id IS NULL)
+    ),
+    CONSTRAINT chk_maintenance_fields CHECK (
+        (task_type = 'maintenance' 
+        AND equipment_id IS NOT NULL 
+        AND maintenance_type IS NOT NULL 
+        AND flight_id IS NULL 
+        AND service_id IS NULL 
+        AND assigned_shift_id IS NULL)
+    )
+);
+
+
+-----------------
+Staff - detailes
+Поле certifications (JSON):
+Зберігає масив об'єктів з деталями сертифікацій.
+
+Приклад запису:
+
+json
+[
+  {
+    "name": "Робота з хімікатами",
+    "issue_date": "2023-01-15",
+    "expiry_date": "2025-01-15"
+  },
+  {
+    "name": "Дезінфекція",
+    "issue_date": "2023-03-20",
+    "expiry_date": "2024-03-20"
+  }
+]
+Переваги:
+
+Немає дублювання даних про співробітників.
+
+Гнучкість: Можна додавати будь-яку кількість сертифікацій без зміни структури таблиці.
+
+Простий пошук: Використовуйте JSON-функції MySQL (наприклад, JSON_CONTAINS) для пошуку сертифікацій.
+
+Окремий прапорець is_deicing_certified:
+
+Залишається як окреме поле, оскільки це критично важлива сертифікація для клінінгу, яку можна швидко перевіряти.
+
+Як працювати з JSON-даними?
+Додати сертифікацію:
+
+sql
+UPDATE staff
+SET certifications = JSON_ARRAY_APPEND(
+    certifications,
+    '$',
+    JSON_OBJECT(
+        "name", "Робота з хімікатами",
+        "issue_date", "2024-01-01",
+        "expiry_date", "2026-01-01"
+    )
+)
+WHERE staff_id = 1;
+Знайти співробітників з певною сертифікацією:
+
+sql
+SELECT * 
+FROM staff 
+WHERE JSON_CONTAINS(certifications->>'$[*].name', '"Дезінфекція"');
+Перевірити дійсність сертифікацій:
+
+sql
+SELECT 
+    staff_id,
+    first_name,
+    certification->>'$[*].expiry_date' AS expiry_dates
+FROM staff
+WHERE JSON_SEARCH(certifications, 'all', CURDATE(), NULL, '$[*].expiry_date') IS NOT NULL;
