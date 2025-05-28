@@ -3,6 +3,9 @@
 - build hierarchy structure for all entetity
 
 - draw main scheme 
+
+створити схему readme файлу де будть відображеня вся кваліфікація та сутності аеропорту
+
 ------
 - Security check readme.md and build ralations
 
