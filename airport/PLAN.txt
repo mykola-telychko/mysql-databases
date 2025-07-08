@@ -1,6 +1,6 @@
 - infrastr/ dispatcher - build 
 
-- build hierarchy structure for all entetity
+- Collect to one file(not1 not1 DOC) build hierarchy structure for all entetity
 
 - draw main scheme 
 
