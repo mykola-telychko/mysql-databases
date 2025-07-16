@@ -1,12 +1,11 @@
-- infrastr/ dispatcher - build 
+- створити схему readme файлу де будть відображеня вся класифікація та сутності аеропорту, 
+можливо таблиці в окремомому файлі tabs.sql а в рдм файлі саме бізнес логіка(процеси і сутності)
 
-- Collect to one file(not1 not1 DOC) build hierarchy structure for all entetity
+- infrastr/ dispatcher - build 
 
 - draw main scheme 
 
 - shorten the rdm file and bring it to the form (скоротити файл рдм і привести його до форми)
-
-створити схему readme файлу де будть відображеня вся кваліфікація та сутності аеропорту
 
 ------
 - Security check readme.md and build ralations
