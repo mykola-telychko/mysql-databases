@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aircraft Maintenance Database Schema</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11.9.0/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .mermaid {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Aircraft Maintenance Database ER Diagram</h1>
+        <div class="mermaid">
+            erDiagram
+                AIRCRAFT ||--o{ MAINTENANCE_TASKS : "has"
+                AIRCRAFT ||--o{ FUELING : "requires"
+                AIRCRAFT ||--o{ CLEANING_SERVICES : "requires"
+                AIRCRAFT ||--o{ CATERING_SERVICES : "requires"
+                AIRCRAFT ||--o{ CREW : "has"
+                AIRCRAFT ||--o{ PASSENGER_SERVICES : "requires"
+                AIRCRAFT ||--o{ INVENTORY : "has"
+                AIRCRAFT ||--o{ INSPECTIONS : "undergoes"
+                AIRCRAFT ||--o{ FLIGHT_LOGS : "has"
+                
+                MAINTENANCE_WORKSHOPS ||--o{ EQUIPMENT : "contains"
+                MAINTENANCE_WORKSHOPS ||--o{ SPECIALISTS : "employs"
+                MAINTENANCE_WORKSHOPS ||--o{ MAINTENANCE_TASKS : "performs"
+                
+                FUEL_TYPES ||--o{ FUELING : "used_in"
+                SERVICE_PROVIDERS }|--|| PASSENGER_SERVICES : "provides"
+
+                AIRCRAFT {
+                    int aircraft_id PK
+                    string model
+                    string registration_number
+                    string manufacturer
+                    string status
+                }
+                
+                MAINTENANCE_WORKSHOPS {
+                    int workshop_id PK
+                    string name
+                    string location
+                    int capacity
+                }
+                
+                EQUIPMENT {
+                    int equipment_id PK
+                    string name
+                    int workshop_id FK
+                    string status
+                }
+                
+                SPECIALISTS {
+                    int specialist_id PK
+                    string name
+                    string position
+                    int workshop_id FK
+                }
+                
+                MAINTENANCE_TASKS {
+                    int task_id PK
+                    int aircraft_id FK
+                    int workshop_id FK
+                    text description
+                    string status
+                }
+                
+                FUEL_TYPES {
+                    int fuel_type_id PK
+                    string name
+                    text description
+                }
+                
+                FUELING {
+                    int fueling_id PK
+                    int aircraft_id FK
+                    int fuel_type_id FK
+                    decimal volume
+                    datetime date
+                }
+                
+                CLEANING_SERVICES {
+                    int id PK
+                    int aircraft_id FK
+                    datetime date
+                    string status
+                }
+                
+                CATERING_SERVICES {
+                    int catering_id PK
+                    int aircraft_id FK
+                    string meal_type
+                    int quantity
+                    datetime date
+                }
+                
+                CREW {
+                    int crew_id PK
+                    string name
+                    string position
+                    int aircraft_id FK
+                    string contacts
+                    text details
+                }
+                
+                PASSENGER_SERVICES {
+                    int service_id PK
+                    int aircraft_id FK
+                    string service_type
+                    datetime date
+                }
+                
+                INVENTORY {
+                    int inventory_id PK
+                    int aircraft_id FK
+                    string item_name
+                    int quantity
+                    datetime date
+                }
+                
+                INSPECTIONS {
+                    int inspection_id PK
+                    int aircraft_id FK
+                    string inspector_name
+                    datetime date
+                    string status
+                }
+                
+                FLIGHT_LOGS {
+                    int id PK
+                    int aircraft_id FK
+                    datetime flight_date
+                    int duration
+                    string status
+                }
+                
+                SERVICE_PROVIDERS {
+                    int provider_id PK
+                    string name
+                    string service_type
+                    string contact_info
+                }
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            er: {
+                diagramPadding: 20,
+                layoutDirection: 'TB',
+                useMaxWidth: true
+            },
+            securityLevel: 'loose'
+        });
+    </script>
+</body>
+</html>

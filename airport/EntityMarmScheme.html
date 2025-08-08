@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airport - Departures Department (Mermaid.js 11.9.0)</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11.9.0/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .mermaid {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow: auto;
+        }
+        .description {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #e8f4fc;
+            border-left: 4px solid #3498db;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Airport Departures Department Organizational Structure</h1>
+        
+        <div class="description">
+            <p>This diagram visualizes the structure of the airport departures department, including architectural elements and personnel.</p>
+        </div>
+
+        <div class="mermaid">
+            flowchart TD
+                %% Main Sections
+                Departures["Departures Department"] --> Architecture["Architecture"]
+                Departures --> Staff["Personnel"]
+
+                %% Architecture
+                Architecture --> Terminals["Terminals"]
+                Terminals --> T1["Terminal 1"]
+                Terminals --> T2["Terminal 2"]
+                Architecture --> Gates["Boarding Gates"]
+                Gates --> SecurityCheck["Security Check"]
+                Gates --> Boarding["Boarding"]
+                Architecture --> Lounges["Waiting Areas"]
+                Lounges --> BusinessLounge["Business Lounge"]
+                Lounges --> PremiumLounge["Premium Lounge"]
+
+                %% Personnel
+                Staff --> GroundStaff["Ground Staff"]
+                GroundStaff --> CheckIn["Check-In"]
+                GroundStaff --> Baggage["Baggage"]
+                Staff --> FlightStaff["Flight Crew"]
+                FlightStaff --> Pilots["Pilots"]
+                FlightStaff --> Stewards["Flight Attendants"]
+                Staff --> Security["Security"]
+                Security --> Police["Police"]
+                Security --> K9["K9 Unit"]
+
+                %% Department Connections
+                CheckIn --> Baggage
+                SecurityCheck --> Boarding
+                BusinessLounge --> Gates
+        </div>
+
+        <div class="description">
+            <p><strong>Structure Explanation:</strong></p>
+            <ul>
+                <li><strong>Architecture:</strong> Includes terminals, boarding gates, and waiting areas</li>
+                <li><strong>Personnel:</strong> Divided into ground staff, flight crew, and security</li>
+                <li><strong>Connections:</strong> Show interactions between different departments</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Mermaid.js
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis',
+                diagramPadding: 20
+            },
+            securityLevel: 'loose'
+        });
+    </script>
+</body>
+</html>
