@@ -1,3 +1,39 @@
+-- ============================================================
+-- Airport Infrastructure Database Schema Documentation
+--
+-- This schema models the infrastructure of an airport, including:
+--   - Runways, taxiways, aprons, and buildings
+--   - Utility systems (power, ventilation, water supply)
+--   - Communications and metering systems
+--   - Maintenance workshops and refueling facilities
+--   - Aircraft service operations
+--   - Documentation, standards, and scheduled inspections
+--
+-- Table Overview:
+--   Runways: Physical runway details, materials, status, and compliance.
+--   Taxiways: Taxiway dimensions and operational status.
+--   Aprons: Aircraft parking locations and supported aircraft types.
+--   Buildings: Airport buildings, their types, locations, and capacities.
+--   PowerSupplySystems, VentilationSystems, WaterSupplySystems:
+--     Utility systems linked to buildings, with capacity and status.
+--   Communications: Communication systems in buildings.
+--   Meters: Utility meters for buildings, with readings and types.
+--   MaintenanceWorkshops: Equipment and specialists for maintenance.
+--   Refueling: Fuel types and volumes for airport operations.
+--   AircraftService: Services provided to aircraft (cleaning, catering).
+--   Documentation: Documents associated with infrastructure entities.
+--   Standards: Compliance standards for infrastructure entities.
+--   ScheduledInspections: Planned inspections for infrastructure entities.
+--
+-- Relationships:
+--   Most utility and communication tables reference buildings via building_id.
+--   Documentation, Standards, and ScheduledInspections use entity_type and entity_id
+--     to associate records with any infrastructure entity.
+--
+-- Notes:
+--   Comments in Ukrainian provide additional context for certain fields.
+--   Data types are chosen for scalability and precision (e.g., BIGINT, FLOAT(53)).
+-- ============================================================
 CREATE TABLE `Runways`(
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `length` FLOAT(53) NOT NULL,

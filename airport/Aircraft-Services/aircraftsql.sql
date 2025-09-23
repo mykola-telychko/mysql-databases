@@ -1,3 +1,67 @@
+/*
+    Database Schema Documentation: Aircraft Services
+
+    Tables:
+    --------
+    1. Aircraft
+        - Stores aircraft details including model, registration number, manufacturer, and status.
+
+    2. MaintenanceWorkshops
+        - Contains information about maintenance workshops, their location, and capacity.
+
+    3. Equipment
+        - Lists equipment assigned to workshops, including status and workshop association.
+
+    4. Specialists
+        - Details specialists working in workshops, including their position and workshop assignment.
+
+    5. MaintenanceTasks
+        - Records maintenance tasks performed on aircraft, including description, status, and associated workshop.
+
+    6. FuelTypes
+        - Catalogs available fuel types and their descriptions.
+
+    7. Fueling
+        - Logs fueling events for aircraft, specifying fuel type, volume, and date.
+
+    8. CleaningServices
+        - Tracks cleaning services provided to aircraft, including date and status.
+
+    9. CateringServices
+        - Records catering services for aircraft, specifying meal type, quantity, and date.
+
+    10. Crew
+        - Stores crew member details assigned to aircraft, including position, contacts, and additional details.
+
+    11. PassengerServices
+        - Logs passenger services provided to aircraft, including service type and date.
+
+    12. Inventory
+        - Manages inventory items on aircraft, including item name, quantity, and date.
+
+    13. Inspections
+        - Records inspection events for aircraft, including inspector name, date, and status.
+
+    14. FlightLogs
+        - Logs flight events for aircraft, including flight date, duration, and status.
+
+    15. ServiceProviders
+        - Contains information about service providers, their service type, and contact info.
+
+    Relationships (Foreign Keys):
+    -----------------------------
+    - Many tables reference Aircraft via aircraft_id (e.g., Inspections, MaintenanceTasks, Fueling, etc.).
+    - Equipment and Specialists reference MaintenanceWorkshops via workshop_id.
+    - Fueling references FuelTypes via fuel_type_id.
+    - ServiceProviders references PassengerServices via service_type.
+    - All foreign key constraints ensure referential integrity between related entities.
+
+    Notes:
+    ------
+    - All primary keys are auto-incremented unsigned integers.
+    - All date fields use DATETIME type for precise event logging.
+    - The schema supports comprehensive tracking of aircraft services, maintenance, crew, inventory, and related operations.
+*/
 CREATE TABLE `Aircraft`(
     `aircraft_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `model` VARCHAR(255) NOT NULL,

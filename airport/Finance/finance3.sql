@@ -1,3 +1,85 @@
+/*
+    Database Schema Documentation: Airport Finance System
+
+    Tables:
+    --------
+    1. payments
+        - Stores payment transactions related to bookings and invoices.
+        - Fields: payment_id, amount, date (UNIX timestamp), currency_id, booking_id, invoice_id, revenue_stream_id.
+        - Foreign Keys: currency_id, booking_id, invoice_id, revenue_stream_id.
+
+    2. invoices
+        - Stores invoice details for financial transactions.
+        - Fields: invoice_id, invoice_number (unique), issue_date, total_amount, status.
+
+    3. revenue_streams
+        - Defines different revenue streams for the airport.
+        - Fields: revenue_stream_id, name, description.
+
+    4. fees
+        - Stores various fees associated with revenue streams.
+        - Fields: fee_id, name, amount, currency_id, revenue_stream_id.
+        - Foreign Keys: currency_id, revenue_stream_id.
+
+    5. expenses
+        - Records expenses incurred by the airport.
+        - Fields: expense_id, amount, date (UNIX timestamp), category_id, contract_id.
+        - Foreign Keys: category_id, contract_id.
+
+    6. expenses_categories
+        - Categorizes types of expenses (e.g., utilities, salaries, rent).
+        - Fields: category_id, name.
+
+    7. contracts
+        - Stores contract information for airport operations.
+        - Fields: contract_id, name, contract_number, start_date, end_date, total_amount.
+
+    8. assets
+        - Records airport assets (e.g., terminals).
+        - Fields: asset_id, name, type, value.
+
+    9. liabilities
+        - Tracks financial liabilities.
+        - Fields: liability_id, name, amount, due_date.
+
+    10. currencies
+        - Stores currency information and exchange rates.
+        - Fields: currencies_id, code, name, exchange_rate.
+
+    11. discounts
+        - Defines discount types and conditions.
+        - Fields: discount_id, type (ENUM: student, group), amount, conditions.
+
+    12. prices_policy
+        - Stores pricing policies for flights.
+        - Fields: policy_id, flight_id, base_price, seasonal_multiplier, effective_date.
+        - Foreign Key: flight_id.
+
+    13. flights
+        - Stores flight information.
+        - Fields: flight_id, flight_number (unique), airline, route, date.
+
+    14. bookings
+        - Records flight bookings by passengers.
+        - Fields: booking_id, passenger_id, flight_id, booking_date.
+        - Foreign Key: flight_id.
+
+    Relationships:
+    --------------
+    - payments references bookings, invoices, currencies, and revenue_streams.
+    - fees references currencies and revenue_streams.
+    - expenses references contracts and expense categories.
+    - prices_policy references flights.
+    - bookings references flights.
+
+    Notes:
+    ------
+    - All primary keys are BIGINT UNSIGNED and auto-incremented.
+    - Amount fields use DECIMAL for precision, except some use BIGINT.
+    - Dates are stored as either DATE or BIGINT (UNIX timestamp).
+    - Unique constraints on invoice_number and flight_number.
+    - Comments in some fields clarify usage (e.g., asset names, expense categories).
+*/
 CREATE TABLE `payments`(
     `payment_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `amount` DECIMAL(10, 2) NOT NULL,

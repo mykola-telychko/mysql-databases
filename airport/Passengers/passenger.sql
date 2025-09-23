@@ -1,3 +1,35 @@
+/*
+    Database Schema Documentation: Airport Passenger and Flight Management
+
+    Tables:
+    - Passengers: Stores passenger personal and contact information.
+    - Flights: Contains flight details including schedule, aircraft, and airline.
+    - Tickets: Records ticket purchases, seat assignments, and ticket status.
+    - CheckIn: Tracks passenger check-in events, counters, and baggage.
+    - PassportControl: Logs passport control checks for passengers.
+    - CustomsControl: Records customs control events and outcomes.
+    - SecurityCheck: Tracks security screening of passengers.
+    - Boarding: Logs passenger boarding events and gate information.
+    - WaitingAreas: Manages waiting area assignments and capacities for flights.
+    - PassengerLocations: Tracks passenger locations and movements within the airport.
+    - FlightStatusUpdates: Stores updates and status changes for flights.
+    - PassengerServices: Records services provided to passengers (e.g., assistance).
+    - FlightDelays: Logs flight delay periods and reasons.
+    - PassengerFeedback: Stores feedback and ratings from passengers about flights.
+    - PassengerPreferences: Records passenger preferences (e.g., meal, seat type).
+
+    Relationships:
+    - Most tables reference Passengers and/or Flights via foreign keys to maintain referential integrity.
+    - Foreign key constraints ensure consistency between passenger, flight, and related event records.
+
+    Usage:
+    - This schema supports comprehensive tracking of passenger journeys, flight operations, and service interactions within an airport environment.
+    - Designed for extensibility and integration with airport management systems.
+
+    Notes:
+    - Some columns include comments for clarification (e.g., status meanings, capacity).
+    - All primary keys are auto-incremented for unique identification.
+*/
 CREATE TABLE `Passengers`(
     `passenger_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `first_name` VARCHAR(255) NOT NULL,
@@ -115,5 +147,54 @@ CREATE TABLE `PassengerFeedback`(
     `flight_id` TEXT NOT NULL,
     `feedback_text` TEXT NOT NULL,
     `rating` INT NOT NULL,
-    `feedback_time` DATETIME NOT NULL
+    `feedback_time` DATETIME NOT NULL,
+    `status` VARCHAR(255) NOT NULL COMMENT '(розглядається, вирішено)'
 );
+CREATE TABLE `PassengerPreferences`(
+    `preference_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `passenger_id` BIGINT NOT NULL,
+    `preference_type` VARCHAR(255) NOT NULL COMMENT '(наприклад, вегетаріанське харчування, вікно)',
+    `preference_value` VARCHAR(255) NOT NULL
+);
+ALTER TABLE
+    `SecurityCheck` ADD CONSTRAINT `securitycheck_passenger_id_foreign` FOREIGN KEY(`passenger_id`) REFERENCES `Passengers`(`passenger_id`);
+ALTER TABLE
+    `FlightStatusUpdates` ADD CONSTRAINT `flightstatusupdates_flight_id_foreign` FOREIGN KEY(`flight_id`) REFERENCES `Flights`(`flight_id`);
+ALTER TABLE
+    `Boarding` ADD CONSTRAINT `boarding_flight_id_foreign` FOREIGN KEY(`flight_id`) REFERENCES `Flights`(`flight_id`);
+ALTER TABLE
+    `Tickets` ADD CONSTRAINT `tickets_flight_id_foreign` FOREIGN KEY(`flight_id`) REFERENCES `Flights`(`flight_id`);
+ALTER TABLE
+    `PassengerPreferences` ADD CONSTRAINT `passengerpreferences_passenger_id_foreign` FOREIGN KEY(`passenger_id`) REFERENCES `Passengers`(`passenger_id`);
+ALTER TABLE
+    `SecurityCheck` ADD CONSTRAINT `securitycheck_flight_id_foreign` FOREIGN KEY(`flight_id`) REFERENCES `Flights`(`flight_id`);
+ALTER TABLE
+    `Boarding` ADD CONSTRAINT `boarding_passenger_id_foreign` FOREIGN KEY(`passenger_id`) REFERENCES `Passengers`(`passenger_id`);
+ALTER TABLE
+    `PassengerFeedback` ADD CONSTRAINT `passengerfeedback_passenger_id_foreign` FOREIGN KEY(`passenger_id`) REFERENCES `Passengers`(`passenger_id`);
+ALTER TABLE
+    `CustomsControl` ADD CONSTRAINT `customscontrol_flight_id_foreign` FOREIGN KEY(`flight_id`) REFERENCES `Flights`(`flight_id`);
+ALTER TABLE
+    `PassengerLocations` ADD CONSTRAINT `passengerlocations_passenger_id_foreign` FOREIGN KEY(`passenger_id`) REFERENCES `Passengers`(`passenger_id`);
+ALTER TABLE
+    `PassportControl` ADD CONSTRAINT `passportcontrol_flight_id_foreign` FOREIGN KEY(`flight_id`) REFERENCES `Flights`(`flight_id`);
+ALTER TABLE
+    `CustomsControl` ADD CONSTRAINT `customscontrol_passenger_id_foreign` FOREIGN KEY(`passenger_id`) REFERENCES `Passengers`(`passenger_id`);
+ALTER TABLE
+    `PassengerLocations` ADD CONSTRAINT `passengerlocations_flight_id_foreign` FOREIGN KEY(`flight_id`) REFERENCES `Flights`(`flight_id`);
+ALTER TABLE
+    `CheckIn` ADD CONSTRAINT `checkin_flight_id_foreign` FOREIGN KEY(`flight_id`) REFERENCES `Flights`(`flight_id`);
+ALTER TABLE
+    `WaitingAreas` ADD CONSTRAINT `waitingareas_flight_id_foreign` FOREIGN KEY(`flight_id`) REFERENCES `Flights`(`flight_id`);
+ALTER TABLE
+    `CheckIn` ADD CONSTRAINT `checkin_passenger_id_foreign` FOREIGN KEY(`passenger_id`) REFERENCES `Passengers`(`passenger_id`);
+ALTER TABLE
+    `FlightDelays` ADD CONSTRAINT `flightdelays_flight_id_foreign` FOREIGN KEY(`flight_id`) REFERENCES `Flights`(`flight_id`);
+ALTER TABLE
+    `PassportControl` ADD CONSTRAINT `passportcontrol_passenger_id_foreign` FOREIGN KEY(`passenger_id`) REFERENCES `Passengers`(`passenger_id`);
+ALTER TABLE
+    `Tickets` ADD CONSTRAINT `tickets_passenger_id_foreign` FOREIGN KEY(`passenger_id`) REFERENCES `Passengers`(`passenger_id`);
+ALTER TABLE
+    `PassengerFeedback` ADD CONSTRAINT `passengerfeedback_flight_id_foreign` FOREIGN KEY(`flight_id`) REFERENCES `Flights`(`flight_id`);
+ALTER TABLE
+    `PassengerServices` ADD CONSTRAINT `passengerservices_passenger_id_foreign` FOREIGN KEY(`passenger_id`) REFERENCES `Passengers`(`passenger_id`);

@@ -1,3 +1,53 @@
+/*
+    Database Schema Documentation: Airport Security System
+
+    Tables:
+
+    1. Cameras
+        - Stores information about security cameras, including location, type, status, and last maintenance date.
+
+    2. SurveillanceLogs
+        - Logs surveillance events captured by cameras, including camera reference, timestamp, and event description.
+
+    3. AccessPoints
+        - Details physical access points in the airport, such as doors or gates, with location, type, and status.
+
+    4. AccessLogs
+        - Records access events at access points, including which person accessed, timestamp, and type of access.
+
+    5. Alarms
+        - Contains information about security alarms, their location, type, and current status.
+
+    6. Persons
+        - Stores personal details of individuals with access to secure areas, including name, role, and access level.
+
+    7. AlarmLogs
+        - Logs alarm events, including which alarm was triggered, timestamp, and event description.
+
+    8. SecurityZones
+        - Defines secure zones within the airport, with zone name and description.
+
+    9. ZoneAccess
+        - Tracks which persons have access to which security zones and the type of access granted.
+
+    10. Incidents
+        - Records security incidents, including description, timestamp, location, and status.
+
+    11. IncidentResponses
+        - Documents responses to incidents, including responder, action taken, and response date.
+
+    12. SecurityStaff
+        - Stores information about security staff members, including name, role, and contact info.
+
+    13. SecurityShifts
+        - Manages security staff shifts, including staff assignment, shift times, and zone coverage.
+
+    14. EmergencyExits
+        - Details emergency exits, their location, status, and last inspection date.
+
+    15. SecurityPolicies
+        - Contains security policy information, including name, description, effective date, and revision date.
+*/
 CREATE TABLE `Cameras`(
     `camera_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `location` VARCHAR(255) NOT NULL,

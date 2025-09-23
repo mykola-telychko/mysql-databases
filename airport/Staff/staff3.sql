@@ -1,3 +1,65 @@
+/*
+    Airport Staff Management Database Schema Documentation
+
+    Tables:
+    --------
+    1. employees
+        - Stores employee details including name, position, department, hire date, status, contact info, and phone.
+        - status: Employee's current employment status (active, on_leave, terminated).
+
+    2. departments
+        - Contains department information and the head employee for each department.
+
+    3. work_schedules
+        - Tracks work schedules for employees, including shift start/end and schedule status (active, vacation, sick_leave).
+
+    4. qualifications_training
+        - Records employee qualifications and training, including type, name, issuing date, validity, and completion date.
+
+    5. air_traffic_control
+        - Assigns employees to air traffic control duties for specific flights, with status and details.
+
+    6. security_staff
+        - Details security staff assignments, including zone, shift times, and related employee.
+
+    7. medical_staff
+        - Lists medical staff, their qualifications (doctor, paramedic, nurse), and assigned zones.
+
+    8. service_staff
+        - Tracks service staff, their duty areas, and status (active, on_break, off_duty).
+
+    9. attendance_log
+        - Logs employee attendance events (entry/exit) with timestamps.
+
+    10. incidents
+        - Records incidents involving employees and departments, with descriptions, report dates, and status (open, in_progress, resolved).
+
+    11. access_control
+        - Manages employee access to zones, specifying access levels (low, mid, high).
+
+    12. maintenance_requests
+        - Tracks maintenance requests by employees, department, description, and status (open, in_progress, completed).
+
+    13. communication_logs
+        - Logs communications by employees within departments, including messages and timestamps.
+
+    14. work_reports
+        - Stores work reports submitted by employees, with report type (daily, weekly, monthly) and submission date.
+
+    15. administration
+        - Contains administration roles, responsibilities, office locations, and associated departments.
+
+    Relationships:
+    --------------
+    - Most tables reference employees and/or departments via foreign keys to ensure data integrity.
+    - Foreign key constraints enforce relationships between employees, departments, schedules, and other entities.
+
+    Notes:
+    ------
+    - ENUM fields are used for status and qualification types to restrict allowed values.
+    - Comments provide additional context for certain fields (e.g., zone assignments, event types).
+    - All primary keys are BIGINT UNSIGNED and auto-incremented for scalability.
+*/
 CREATE TABLE `employees`(
     `employee_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `first_name` VARCHAR(100) NOT NULL,
