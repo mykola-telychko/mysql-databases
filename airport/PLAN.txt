@@ -1,3 +1,6 @@
+- на основі автозгенерованої документації робити наступні кроки по документуванню та проектуванню:
+(based on the auto-generated documentation, take the following steps for documentation and design:)
+
 - створити схему(js-marmaid) для readme файлу де будть відображеня вся класифікація та сутності аеропорту, 
 можливо таблиці в окремомому файлі tabs.sql а в рдм файлі саме бізнес логіка(процеси і сутності)
 -- build drawio scheme from .SQLfile for each department
