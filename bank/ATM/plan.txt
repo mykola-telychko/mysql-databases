@@ -1,3 +1,7 @@
 UI Design https://github.com/mykola-telychko/plus-bank
 
 https://github.com/mykola-telychko/plus-bank/blob/main/drafts.txt
+
+Check main plan for ATM . 
+
+описати основні функції банкомату(зверстати новий) і їх реалізацію в коді і в бд.
