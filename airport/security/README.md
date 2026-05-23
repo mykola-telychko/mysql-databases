@@ -3,7 +3,7 @@
 https://drawsql.app/teams/no-642/diagrams/airport-security
 -------------------------
 
-![Схема безпеки](security.png)
+![Security](security.png)
 
 Основні таблиці:
 

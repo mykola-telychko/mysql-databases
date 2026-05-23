@@ -1,3 +1,5 @@
+- додати в readme посилання на зображення. (вже є в Aircraft-Services і Security)
+
 - на основі автозгенерованої документації робити наступні кроки по документуванню та проектуванню:
 (based on the auto-generated documentation, take the following steps for documentation and design:)
 

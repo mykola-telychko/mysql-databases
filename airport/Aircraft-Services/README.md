@@ -1,5 +1,7 @@
 # AIRCRAFT-SERVICES
 
+![Aircraft](aircraft-1.png)
+![Aircraft-relations](aircraft-2.png)
 
 CANONICAL FLIGHTS 
 https://github.com/mykola-telychko/mysql-databases/blob/main/airport/README.md
