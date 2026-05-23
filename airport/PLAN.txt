@@ -13,13 +13,16 @@
 
 - shorten the rdm file and bring it to the form (скоротити файл рдм і привести його до форми)
 
-транспортна поліция в аеропортах - занести до сервісів?
+транспортна поліция в аеропортах - занести до сервісів?(чи окремо в безпеці?)
 
 check cleaning service for airport ???
 logicstics check ???
 
 ------
-- Security check readme.md and build ralations
+- Security: check readme.md and build ralations
+
+
+https://dbdiagram.io/d - ознайомитися 
 
 - Services aircraft - last check & upgrade (why separate FuelTypes)
 - translate clasification methods for presentation

@@ -1,9 +1,13 @@
 # Security
 
+https://drawsql.app/teams/no-642/diagrams/airport-security
 -------------------------
-Основні таблиці:
-Cameras - камери спостереження
 
+![Схема безпеки](security.png)
+
+Основні таблиці:
+
+Cameras - камери спостереження
 SurveillanceLogs - логи з камер
 AccessPoints - контрольні точки доступу
 AccessLogs - логи доступу
@@ -18,6 +22,7 @@ SecurityStaff - охоронний персонал
 SecurityShifts - зміни охорони
 EmergencyExits - аварійні виходи
 SecurityPolicies - політики безпеки
+Reports - звіти з кожного відділу 
 
 Пропоновані зв'язки між таблицями: 
 SurveillanceLogs.camera_id → Cameras.camera_id (зовнішній ключ)
